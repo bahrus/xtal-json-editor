@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="xtal-json-editor">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `xtal-json-editor`
+     * Polymer web wrapper around josdejong&#39;s excellent JSON editor
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class XtalJsonEditor extends Polymer.Element {
+      static get is() { return 'xtal-json-editor'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'xtal-json-editor'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(XtalJsonEditor.is, XtalJsonEditor);
+  </script>
+</dom-module>
