@@ -6,9 +6,11 @@ var xtal;
     (function (elements) {
         customElements.whenDefined('dom-module').then(() => {
             /**
-             * Polymer based web component wrapper around the JSON Editor api.
+             * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at  at https://github.com/josdejong/jsoneditor
              *
-             * Code can be found at https://github.com/josdejong/jsoneditor
+             * @customElement
+             * @polymer
+             * @demo demo/index.html
              */
             class XtalJsonEditor extends Polymer.Element {
                 static get is() { return 'xtal-json-editor'; }

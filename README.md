@@ -1,6 +1,36 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/bahrus/xtal-json-editor)
+
 # \<xtal-json-editor\>
 
-Polymer web wrapper around josdejong&#39;s excellent JSON editor
+Polymer web wrapper around josdejong&#39;s most excellent JSON editor.
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="xtal-json-editor.html">
+    <link rel="import" href="../polymer/lib/elements/dom-bind.html">
+    <dom-bind>
+        <template>
+            <xtal-json-editor watch="[[objectToEdit]]"></xtal-json-editor>
+        </template>
+    </dom-bind>
+    <script>
+        document.querySelector('dom-bind').objectToEdit = {
+          hello: 'world'
+        };
+      </script>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+    <dom-bind>
+        <template>
+            <xtal-json-editor watch="[[objectToEdit]]"></xtal-json-editor>
+        </template>
+    </dom-bind>
+```
 
 ## Install the Polymer-CLI
 
