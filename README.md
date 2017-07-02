@@ -2,7 +2,7 @@
 
 # \<xtal-json-editor\>
 
-Polymer web wrapper around josdejong&#39;s most excellent JSON editor.
+Polymer web wrapper around josdejong&#39;s awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
 
 <!--
 ```

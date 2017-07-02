@@ -9,7 +9,7 @@ var xtal;
             if (customElements.get(tagName))
                 return;
             /**
-            * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at  at https://github.com/josdejong/jsoneditor
+            * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
             *
             * @customElement
             * @polymer
