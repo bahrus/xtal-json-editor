@@ -4,16 +4,19 @@ var xtal;
 (function (xtal) {
     var elements;
     (function (elements) {
-        customElements.whenDefined('dom-module').then(() => {
+        function initXtalJsonEditor() {
+            const tagName = 'xtal-json-editor';
+            if (customElements.get(tagName))
+                return;
             /**
-             * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at  at https://github.com/josdejong/jsoneditor
-             *
-             * @customElement
-             * @polymer
-             * @demo demo/index.html
-             */
+            * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at  at https://github.com/josdejong/jsoneditor
+            *
+            * @customElement
+            * @polymer
+            * @demo demo/index.html
+            */
             class XtalJsonEditor extends Polymer.Element {
-                static get is() { return 'xtal-json-editor'; }
+                static get is() { return tagName; }
                 static get properties() {
                     return {
                         /**
@@ -44,7 +47,20 @@ var xtal;
                 }
             }
             customElements.define(XtalJsonEditor.is, XtalJsonEditor);
-        });
+        }
+        const testSyncKey = 'xtal_elements_json_editor_sync';
+        if (window[testSyncKey]) {
+            initXtalJsonEditor();
+            delete window[testSyncKey];
+        }
+        else {
+            customElements.whenDefined('poly-prep').then(() => {
+                initXtalJsonEditor();
+            });
+            customElements.whenDefined('full-poly-prep').then(() => {
+                initXtalJsonEditor();
+            });
+        }
     })(elements = xtal.elements || (xtal.elements = {}));
 })(xtal || (xtal = {}));
 //# sourceMappingURL=xtal-json-editor.js.map
