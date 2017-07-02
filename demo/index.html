@@ -11,6 +11,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../xtal-json-editor.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,9 +23,18 @@
       <h3>Basic xtal-json-editor demo</h3>
       <demo-snippet>
         <template>
-          <xtal-json-editor></xtal-json-editor>
+          <dom-bind>
+            <template>
+              <xtal-json-editor watch="[[objectToEdit]]"></xtal-json-editor>
+            </template>
+          </dom-bind>
         </template>
       </demo-snippet>
+      <script>
+        document.querySelector('dom-bind').objectToEdit = {
+          hello: 'world'
+        };
+      </script>
     </div>
   </body>
 </html>
