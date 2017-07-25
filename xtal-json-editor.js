@@ -1,5 +1,5 @@
-///<reference path="polymer2.d.ts"/>
-/// <reference types="jsoneditor" />
+///<reference path="node_modules/@types/jsoneditor/index.d.ts"/>
+//declare type JSONEditor = jsoneditor.JSONEditor;
 var xtal;
 (function (xtal) {
     var elements;
