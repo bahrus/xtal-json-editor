@@ -3,13 +3,11 @@
 <link async rel="import" href="defaultTheme.html">
 <dom-module id="xtal-json-editor">
     <template>
-        <style include="xtal-json-editor-default-theme">
-
-        </style>
-        <div id="xcontainer"></div>
+        <style include="xtal-json-editor-default-theme"></style>
+        <div id="xcontainer" style$="height:[[height]];width:[[width]]"></div>
     </template>
     
-   <script async src="jsoneditor.min.js"></script>
+   <script async src="jsoneditor.js"></script>
    <script async src="xtal-json-editor.js"></script>
 
 </dom-module>
