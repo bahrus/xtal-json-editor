@@ -26,7 +26,10 @@
         <template>
           <dom-bind>
             <template>
-              <xtal-json-editor watch="[[objectToEdit]]"></xtal-json-editor>
+              <xtal-json-editor watch="[[objectToEdit]]" edited-result="{{myEditedResult}}" as="text"></xtal-json-editor>
+              <br>
+              Edited Value: 
+              <code>[[myEditedResult]]</code>
             </template>
           </dom-bind>
           <script>
