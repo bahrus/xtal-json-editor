@@ -8,6 +8,7 @@ export interface  IXtalJsonEditorProperties{
     editedResult: object | polymer.PropObjectType,
     as: string | polymer.PropObjectType,
     height: string | polymer.PropObjectType,
+    enableDebugger: boolean | polymer.PropObjectType,
     width: string | polymer.PropObjectType
 }
 module xtal.elements{
@@ -24,6 +25,8 @@ module xtal.elements{
         */
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
+            inDebugMode;
+            enableDebugger;
             _jsonEditor: JSONEditor;as;height;width
             static get is() { return tagName; }
             static get properties() {
@@ -71,6 +74,10 @@ module xtal.elements{
                     width:{
                         type: String,
                         value: '400px'
+                    },
+                    enableDebugger:{
+                        type: Boolean,
+                        observer: 'onEnableDebugger'
                     }
 
                 };
@@ -79,8 +86,48 @@ module xtal.elements{
             get jsonEditor() {
                 return this._jsonEditor;
             }
+            // toggleVisibility(e: Event){
+            //     if(!this.inDebugMode){
+            //         this.$.xcontainer.style.display = 'block';
+            //     }else{
+            //         this.$.xcontainer.style.display = 'none';
+            //     }
+            // }
+            namesToBlock = ['$', '__proto__', 'root'];
+            enableDebug(e: Event){
+                this.style.display = 'block';
+                const objToEdit = {};
+                const ownProps = Object.getOwnPropertyNames(e.srcElement);
+                ownProps.forEach(name => {
+                    if(name.startsWith('_')) return;
+                    if(this.namesToBlock.indexOf(name) !==-1 ) return;
+                    objToEdit[name] = e.srcElement[name];
+                });
+                console.log(objToEdit);
+                this.watch = objToEdit;
+            }
+            onEnableDebugger(){
+                if(this.enableDebugger){
+                    this.style.display = 'none';
+                    const _this = this;
+                    document.body.addEventListener('click', e =>{
+                        if(e.ctrlKey){
+                            const tn = e.srcElement.tagName;
+                            console.log(tn);
+                            if(tn.indexOf('-') > -1){
+                                if(customElements.get(tn.toLowerCase())){
+                                    console.log('enableDebug');
+                                    _this.enableDebug(e);
+                                }
+                            }
+                        }
+                        
+                    })
+                }
+            }
             
             onPropsChange(newVal) {
+                console.select
                 if (!this.watch) return;
                 if(this.waitForOptions && !this.options) return;
                 const _this = this;
