@@ -16,17 +16,6 @@ var xtal;
             * @demo demo/index.html
             */
             class XtalJsonEditor extends Polymer.Element {
-                constructor() {
-                    super(...arguments);
-                    // toggleVisibility(e: Event){
-                    //     if(!this.inDebugMode){
-                    //         this.$.xcontainer.style.display = 'block';
-                    //     }else{
-                    //         this.$.xcontainer.style.display = 'none';
-                    //     }
-                    // }
-                    this.namesToBlock = ['$', '__proto__', 'root'];
-                }
                 static get is() { return tagName; }
                 static get properties() {
                     return {
@@ -73,50 +62,13 @@ var xtal;
                         width: {
                             type: String,
                             value: '400px'
-                        },
-                        enableDebugger: {
-                            type: Boolean,
-                            observer: 'onEnableDebugger'
                         }
                     };
                 }
                 get jsonEditor() {
                     return this._jsonEditor;
                 }
-                enableDebug(e) {
-                    this.style.display = 'block';
-                    const objToEdit = {};
-                    const ownProps = Object.getOwnPropertyNames(e.srcElement);
-                    ownProps.forEach(name => {
-                        if (name.startsWith('_'))
-                            return;
-                        if (this.namesToBlock.indexOf(name) !== -1)
-                            return;
-                        objToEdit[name] = e.srcElement[name];
-                    });
-                    console.log(objToEdit);
-                    this.watch = objToEdit;
-                }
-                onEnableDebugger() {
-                    if (this.enableDebugger) {
-                        this.style.display = 'none';
-                        const _this = this;
-                        document.body.addEventListener('click', e => {
-                            if (e.ctrlKey) {
-                                const tn = e.srcElement.tagName;
-                                console.log(tn);
-                                if (tn.indexOf('-') > -1) {
-                                    if (customElements.get(tn.toLowerCase())) {
-                                        console.log('enableDebug');
-                                        _this.enableDebug(e);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
                 onPropsChange(newVal) {
-                    console.select;
                     if (!this.watch)
                         return;
                     if (this.waitForOptions && !this.options)
