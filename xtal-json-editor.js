@@ -5,8 +5,7 @@ var xtal;
     var elements;
     (function (elements) {
         function initXtalJsonEditor() {
-            const tagName = 'xtal-json-editor';
-            if (customElements.get(tagName))
+            if (customElements.get('xtal-json-editor'))
                 return;
             /**
             * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
@@ -16,7 +15,7 @@ var xtal;
             * @demo demo/index.html
             */
             class XtalJsonEditor extends Polymer.Element {
-                static get is() { return tagName; }
+                static get is() { return 'xtal-json-editor'; }
                 static get properties() {
                     return {
                         /**

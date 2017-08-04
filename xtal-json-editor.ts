@@ -12,8 +12,7 @@ export interface  IXtalJsonEditorProperties{
 }
 module xtal.elements{
     function initXtalJsonEditor() {
-        const tagName = 'xtal-json-editor';
-        if (customElements.get(tagName))
+        if (customElements.get('xtal-json-editor'))
             return;
         /**
         * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
@@ -25,7 +24,7 @@ module xtal.elements{
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
             _jsonEditor: JSONEditor;as;height;width
-            static get is() { return tagName; }
+            static get is() { return 'xtal-json-editor'; }
             static get properties() {
                 return {
                     /**
