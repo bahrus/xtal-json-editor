@@ -12,8 +12,12 @@ export interface  IXtalJsonEditorProperties{
 }
 (function () { 
     function initXtalJsonEditor() {
-        if (customElements.get('xtal-json-editor'))
+        console.log('in initXtalJsonEditor');
+        if (customElements.get('xtal-json-editor')){
+            console.log('already defined');
             return;
+        }
+        console.log('lets define xtal-json-editor');    
         /**
         * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
         *
@@ -24,6 +28,10 @@ export interface  IXtalJsonEditorProperties{
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
             _jsonEditor: JSONEditor;as;height;width
+            constructor(){
+                super();
+                console.log('in construcrtor');
+            }
             static get is() { return 'xtal-json-editor'; }
             static get properties() {
                 return {
@@ -80,9 +88,10 @@ export interface  IXtalJsonEditorProperties{
             }
             
             onPropsChange(newVal) {
+                console.log('onPropsChange');
                 if (!this.watch) return;
                 if(this.waitForOptions && !this.options) return;
-                const _this = this;
+                //const _this = this;
                 if(!this.options) this.options = {};
                 //if(this.options){
                 if(!this.options.onChange){
@@ -94,11 +103,13 @@ export interface  IXtalJsonEditorProperties{
                 }
                 //}
                 this.$.xcontainer.innerHTML = '';
+                console.log('i am here');
                 this._jsonEditor = new JSONEditor(this.$.xcontainer, this.options);
                 this._jsonEditor.set(this.watch);
                 
             }
         }
+        console.log('adding XtalJsonEditor to custom elements');
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
 
@@ -108,7 +119,9 @@ export interface  IXtalJsonEditorProperties{
            setTimeout( WaitForPolymer, 100);
            return;
         }
+        console.log('call initXtalJsonEditor');
         initXtalJsonEditor();
     }
+    console.log('call WaitForPolymer');
     WaitForPolymer();
 })();

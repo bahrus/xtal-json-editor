@@ -2,8 +2,12 @@
 //declare type JSONEditor = jsoneditor.JSONEditor;
 (function () {
     function initXtalJsonEditor() {
-        if (customElements.get('xtal-json-editor'))
+        console.log('in initXtalJsonEditor');
+        if (customElements.get('xtal-json-editor')) {
+            console.log('already defined');
             return;
+        }
+        console.log('lets define xtal-json-editor');
         /**
         * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
         *
@@ -12,6 +16,10 @@
         * @demo demo/index.html
         */
         class XtalJsonEditor extends Polymer.Element {
+            constructor() {
+                super();
+                console.log('in construcrtor');
+            }
             static get is() { return 'xtal-json-editor'; }
             static get properties() {
                 return {
@@ -65,11 +73,12 @@
                 return this._jsonEditor;
             }
             onPropsChange(newVal) {
+                console.log('onPropsChange');
                 if (!this.watch)
                     return;
                 if (this.waitForOptions && !this.options)
                     return;
-                const _this = this;
+                //const _this = this;
                 if (!this.options)
                     this.options = {};
                 //if(this.options){
@@ -83,10 +92,12 @@
                 }
                 //}
                 this.$.xcontainer.innerHTML = '';
+                console.log('i am here');
                 this._jsonEditor = new JSONEditor(this.$.xcontainer, this.options);
                 this._jsonEditor.set(this.watch);
             }
         }
+        console.log('adding XtalJsonEditor to custom elements');
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
     function WaitForPolymer() {
@@ -94,8 +105,10 @@
             setTimeout(WaitForPolymer, 100);
             return;
         }
+        console.log('call initXtalJsonEditor');
         initXtalJsonEditor();
     }
+    console.log('call WaitForPolymer');
     WaitForPolymer();
 })();
 //# sourceMappingURL=xtal-json-editor.js.map
