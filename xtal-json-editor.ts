@@ -2,7 +2,8 @@
 //declare type JSONEditor = jsoneditor.JSONEditor;
 
 export interface  IXtalJsonEditorProperties{
-    watch: object | polymer.PropObjectType
+    cssPath: string | polymer.PropObjectType,
+    watch: object | polymer.PropObjectType,
     options: jsoneditor.JSONEditorOptions | polymer.PropObjectType,
     waitForOptions: boolean | polymer.PropObjectType,
     editedResult: object | polymer.PropObjectType,
@@ -10,14 +11,12 @@ export interface  IXtalJsonEditorProperties{
     height: string | polymer.PropObjectType,
     width: string | polymer.PropObjectType
 }
-(function () { 
+(function () {
+    let cs; 
     function initXtalJsonEditor() {
-        console.log('in initXtalJsonEditor');
         if (customElements.get('xtal-json-editor')){
-            console.log('already defined');
             return;
         }
-        console.log('lets define xtal-json-editor');    
         /**
         * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
         *
@@ -27,14 +26,45 @@ export interface  IXtalJsonEditorProperties{
         */
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
-            _jsonEditor: JSONEditor;as;height;width
-            constructor(){
-                super();
-                console.log('in construcrtor');
+            _jsonEditor: JSONEditor;as;height;width;cssPath;
+            cs = cs;
+            //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
+            absolute(base, relative) {
+                var stack = base.split("/"),
+                    parts = relative.split("/");
+                stack.pop(); // remove current file name (or empty string)
+                // (omit if "base" is the current folder without trailing slash)
+                for (var i = 0; i < parts.length; i++) {
+                    if (parts[i] == ".")
+                        continue;
+                    if (parts[i] == "..")
+                        stack.pop();
+                    else
+                        stack.push(parts[i]);
+                }
+                return stack.join("/");
+            }
+            connectedCallback(){
+                super.connectedCallback();
+                if(!this.cssPath){
+                    //const cs = document.currentScript;
+                    if(cs){
+                        this.cssPath = this.absolute(cs.baseURI, 'jsoneditor.min.css');
+                    }else{
+                        this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
+                    }
+                }
+                console.log(this.cssPath);
             }
             static get is() { return 'xtal-json-editor'; }
             static get properties() {
                 return {
+                    /**
+                     * Path to get the styling
+                     */
+                    cssPath:{
+                        type: String
+                    },
                     /**
                     * The expression that points to an object to edit.
                     */
@@ -88,7 +118,6 @@ export interface  IXtalJsonEditorProperties{
             }
             
             onPropsChange(newVal) {
-                console.log('onPropsChange');
                 if (!this.watch) return;
                 if(this.waitForOptions && !this.options) return;
                 //const _this = this;
@@ -103,25 +132,22 @@ export interface  IXtalJsonEditorProperties{
                 }
                 //}
                 this.$.xcontainer.innerHTML = '';
-                console.log('i am here');
                 this._jsonEditor = new JSONEditor(this.$.xcontainer, this.options);
                 this._jsonEditor.set(this.watch);
                 
             }
         }
-        console.log('adding XtalJsonEditor to custom elements');
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
 
     function WaitForPolymer()
     {
+        cs = document.currentScript;
         if ((typeof Polymer !== 'function') || (typeof Polymer.Element !== 'function')) {
            setTimeout( WaitForPolymer, 100);
            return;
         }
-        console.log('call initXtalJsonEditor');
         initXtalJsonEditor();
     }
-    console.log('call WaitForPolymer');
     WaitForPolymer();
 })();

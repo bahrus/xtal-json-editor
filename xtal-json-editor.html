@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <link rel="import" href="../polymer/polymer-element.html">
-<!-- <link rel="import" href="defaultTheme.html"> -->
 <dom-module id="xtal-json-editor">
     
     <template>
-        <link id="extCss" async rel="stylesheet" type="text/css"  href="../jsoneditor.css">
-        <!-- <style include="xtal-json-editor-default-theme">
-
-        </style> -->
+        <link id="extCss" async rel="stylesheet" type="text/css"  href="[[cssPath]]">
+    
         <div id="xcontainer" style$="height:[[height]];width:[[width]]"></div>
     </template> 
    <script src="jsoneditor.js"></script>
