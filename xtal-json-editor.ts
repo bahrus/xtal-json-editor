@@ -10,7 +10,7 @@ export interface  IXtalJsonEditorProperties{
     height: string | polymer.PropObjectType,
     width: string | polymer.PropObjectType
 }
-module xtal.elements{
+(function () { 
     function initXtalJsonEditor() {
         if (customElements.get('xtal-json-editor'))
             return;
@@ -102,17 +102,13 @@ module xtal.elements{
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
 
-    const testSyncKey = 'xtal_elements_json_editor_sync';
-    if (window[testSyncKey]) {
+    function WaitForPolymer()
+    {
+        if ((typeof Polymer !== 'function') || (typeof Polymer.Element !== 'function')) {
+           setTimeout( WaitForPolymer, 100);
+           return;
+        }
         initXtalJsonEditor();
-        delete window[testSyncKey];
     }
-    else {
-        customElements.whenDefined('poly-prep').then(() => {
-            initXtalJsonEditor();
-        });
-        customElements.whenDefined('full-poly-prep').then(() => {
-            initXtalJsonEditor();
-        });
-    }
-}
+    WaitForPolymer();
+})();
