@@ -104,10 +104,16 @@
             get jsonEditor() {
                 return this._jsonEditor;
             }
-            onPropsChange(newVal) {
+            loadedCSS() {
+                this._cssLoaded = true;
+                this.onPropsChange();
+            }
+            onPropsChange() {
                 if (!this.watch)
                     return;
                 if (this.waitForOptions && !this.options)
+                    return;
+                if (!this._cssLoaded)
                     return;
                 //const _this = this;
                 if (!this.options)

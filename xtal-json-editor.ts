@@ -26,6 +26,7 @@ export interface  IXtalJsonEditorProperties{
         */
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
+            _cssLoaded: boolean;
             _jsonEditor: JSONEditor;as;height;width;cssPath;
             cs = cs;
             //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
@@ -116,10 +117,14 @@ export interface  IXtalJsonEditorProperties{
             get jsonEditor() {
                 return this._jsonEditor;
             }
-            
-            onPropsChange(newVal) {
+            loadedCSS(){
+                this._cssLoaded = true;
+                this.onPropsChange();
+            }
+            onPropsChange() {
                 if (!this.watch) return;
                 if(this.waitForOptions && !this.options) return;
+                if(!this._cssLoaded) return;
                 //const _this = this;
                 if(!this.options) this.options = {};
                 //if(this.options){

@@ -3,7 +3,7 @@
 <dom-module id="xtal-json-editor">
     
     <template>
-        <link id="extCss" async rel="stylesheet" type="text/css"  href="[[cssPath]]">
+        <link id="extCss" on-load="loadedCSS" async rel="stylesheet" type="text/css"  href="[[cssPath]]">
     
         <div id="xcontainer" style$="height:[[height]];width:[[width]]"></div>
     </template> 
