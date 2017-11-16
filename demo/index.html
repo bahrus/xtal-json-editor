@@ -13,6 +13,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+    <script src="../../json-merge/json-merge.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -26,10 +27,66 @@
         <template>
           <dom-bind>
             <template>
-              <xtal-json-editor watch='{"hello": "world"}' edited-result="{{myEditedResult}}" as="text"></xtal-json-editor>
-              <br>
-              Edited Value: 
-              <code>[[myEditedResult]]</code>
+                <xtal-json-editor watch="[[objectToEdit]]" edited-result="{{myEditedResult}}" as="text"></xtal-json-editor>
+                <br>
+                Edited Value: 
+                <code>[[myEditedResult]]</code>
+                <json-merge watch="{}" result="{{objectToEdit}}">
+                  <script type="application/json">
+                  [
+                      
+                    {
+                      "_id": "580d3fbba86e6de6accf5cd1",
+                      "index": 0,
+                      "guid": "23bc285a-1c9e-4975-9c85-f3203721444e",
+                      "isActive": false,
+                      "balance": "$3,317.88",
+                      "picture": "http://placehold.it/32x32",
+                      "age": 37,
+                      "eyeColor": "brown",
+                      "name": "Cooper Patel",
+                      "gender": "male",
+                      "company": "UNISURE",
+                      "email": "cooperpatel@unisure.com",
+                      "phone": "+1 (821) 531-3163",
+                      "address": "962 Varick Avenue, Bentley, Delaware, 1319",
+                      "about": "Aliqua reprehenderit sit reprehenderit cillum anim duis reprehenderit ea deserunt veniam aliquip pariatur aute. Anim sint ea sunt ut sunt sint incididunt dolor. Ipsum ex dolor consequat aute. Eiusmod mollit qui nulla labore Lorem aute occaecat cillum irure fugiat. Nisi proident anim quis laboris veniam aute deserunt eu ipsum culpa eiusmod duis et pariatur.\r\n",
+                      "registered": "2015-06-20T05:36:12 +04:00",
+                      "latitude": -53.862758,
+                      "longitude": -135.928028,
+                      "tags": [
+                        "et",
+                        "deserunt",
+                        "proident",
+                        "proident",
+                        "qui",
+                        "magna",
+                        "voluptate"
+                      ],
+                      "friends": [
+                        {
+                          "id": 0,
+                          "name": "Stuart Massey"
+                        },
+                        {
+                          "id": 1,
+                          "name": "Spencer Garrett"
+                        },
+                        {
+                          "id": 2,
+                          "name": "Petty Houston"
+                        }
+                      ],
+                      "greeting": "Hello, Cooper Patel! You have 1 unread messages.",
+                      "favoriteFruit": "strawberry"
+                    }
+
+                    
+                    
+                  ]
+                  </script>
+                </json-merge>
+              
             </template>
           </dom-bind>
         </template>

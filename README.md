@@ -8,7 +8,7 @@ Polymer web wrapper around josdejong&#39;s awesome, most excellent JSON Editor a
 ```
 <custom-element-demo>
   <template>
-    <link rel="import" href="xtal-json-editor-sync.html">
+    <link rel="import" href="xtal-json-editor.html">
     <link rel="import" href="../polymer/lib/elements/dom-bind.html">
     <dom-bind>
         <template>

@@ -3,7 +3,8 @@
   "description": "Polymer web wrapper around josdejong&#39;s excellent JSON editor",
   "main": "xtal-json-editor.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "json-merge": "bahrus/json-merge#^0.1.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
