@@ -208,6 +208,7 @@ export interface  IXtalJsonEditorProperties{
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
     cs = document.currentScript;
+    
     function WaitForPolymer()
     {
         
