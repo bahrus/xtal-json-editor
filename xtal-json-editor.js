@@ -33,8 +33,50 @@
                 }
                 return stack.join("/");
             }
+            downloadJSFilesInParallelButLoadInSequence(refs) {
+                //see https://www.html5rocks.com/en/tutorials/speed/script-loading/
+                return new Promise((resolve, reject) => {
+                    const notLoadedYet = {};
+                    const nonNullRefs = refs.filter(ref => ref !== null);
+                    nonNullRefs.forEach(ref => {
+                        notLoadedYet[ref.src] = true;
+                    });
+                    nonNullRefs.forEach(ref => {
+                        const script = document.createElement('script');
+                        script.src = ref.src;
+                        script.async = false;
+                        script.onload = () => {
+                            //delete notLoadedYet[script.src];
+                            Object.keys(notLoadedYet).forEach(key => {
+                                if (script.src.endsWith(key)) {
+                                    delete notLoadedYet[key];
+                                    return;
+                                }
+                            });
+                            if (Object.keys(notLoadedYet).length === 0) {
+                                resolve();
+                            }
+                        };
+                        document.head.appendChild(script);
+                    });
+                });
+            }
             connectedCallback() {
                 super.connectedCallback();
+                if (typeof (JSONEditor) !== 'function') {
+                    if (!this.jsLibPath) {
+                        if (cs) {
+                            this.jsLibPath = this.absolute(cs.baseURI, 'jsoneditor-minimalist.min.js');
+                        }
+                        else {
+                            throw "Not implemented yet";
+                        }
+                    }
+                    const refs = [{ src: this.jsLibPath }];
+                    this.downloadJSFilesInParallelButLoadInSequence(refs).then(() => {
+                        this.loadedJS();
+                    });
+                }
                 if (!this.cssPath) {
                     //const cs = document.currentScript;
                     if (cs) {
@@ -53,6 +95,12 @@
                      * Path to get the styling
                      */
                     cssPath: {
+                        type: String
+                    },
+                    /**
+                     * Path to the js lib
+                     */
+                    jsLibPath: {
                         type: String
                     },
                     /**
@@ -108,12 +156,18 @@
                 this._cssLoaded = true;
                 this.onPropsChange();
             }
+            loadedJS() {
+                this._jsLoaded = true;
+                this.onPropsChange();
+            }
             onPropsChange() {
                 if (!this.watch)
                     return;
                 if (this.waitForOptions && !this.options)
                     return;
                 if (!this._cssLoaded)
+                    return;
+                if (!this._jsLoaded)
                     return;
                 //const _this = this;
                 if (!this.options)

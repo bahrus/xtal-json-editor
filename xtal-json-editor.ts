@@ -3,6 +3,7 @@
 
 export interface  IXtalJsonEditorProperties{
     cssPath: string | polymer.PropObjectType,
+    jsLibPath: string | polymer.PropObjectType,
     watch: object | polymer.PropObjectType,
     options: jsoneditor.JSONEditorOptions | polymer.PropObjectType,
     waitForOptions: boolean | polymer.PropObjectType,
@@ -12,7 +13,10 @@ export interface  IXtalJsonEditorProperties{
     width: string | polymer.PropObjectType
 }
 (function () {
-    let cs; 
+    let cs;
+    interface IDynamicJSLoadStep{
+        src?: string;
+    } 
     function initXtalJsonEditor() {
         if (customElements.get('xtal-json-editor')){
             return;
@@ -26,8 +30,8 @@ export interface  IXtalJsonEditorProperties{
         */
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
             watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
-            _cssLoaded: boolean;
-            _jsonEditor: JSONEditor;as;height;width;cssPath;
+            _cssLoaded: boolean;_jsLoaded: boolean;
+            _jsonEditor: JSONEditor;as;height;width;cssPath;jsLibPath;
             cs = cs;
             //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
             absolute(base, relative) {
@@ -45,8 +49,51 @@ export interface  IXtalJsonEditorProperties{
                 }
                 return stack.join("/");
             }
+            downloadJSFilesInParallelButLoadInSequence(refs: IDynamicJSLoadStep[]){
+                //see https://www.html5rocks.com/en/tutorials/speed/script-loading/
+                return new Promise((resolve, reject) => {
+                    const notLoadedYet : {[key: string] : boolean} = {};
+                    const nonNullRefs = refs.filter(ref => ref !== null);
+                    nonNullRefs.forEach(ref => {
+                        notLoadedYet[ref.src] = true;
+                    });
+                    nonNullRefs.forEach(ref =>{
+                        const script = document.createElement('script');
+                        script.src = ref.src;
+                        script.async = false;
+                        script.onload = () =>{
+                            //delete notLoadedYet[script.src];
+                            Object.keys(notLoadedYet).forEach(key =>{
+                                if(script.src.endsWith(key)){
+                                    delete notLoadedYet[key];
+                                    return;
+                                }
+                            })
+                            if(Object.keys(notLoadedYet).length === 0){
+                                resolve();
+                            }
+                        }
+                        document.head.appendChild(script);
+                    });
+                })
+ 
+            }
             connectedCallback(){
                 super.connectedCallback();
+                if(typeof(JSONEditor) !== 'function'){
+                    if(!this.jsLibPath){
+                        if(cs){
+                            this.jsLibPath = this.absolute(cs.baseURI, 'jsoneditor-minimalist.min.js');
+                        }else{
+                            throw "Not implemented yet"
+                        }
+                        
+                    }
+                    const refs = [{src: this.jsLibPath}] as IDynamicJSLoadStep[];
+                    this.downloadJSFilesInParallelButLoadInSequence(refs).then(() =>{
+                        this.loadedJS();
+                    })
+                }
                 if(!this.cssPath){
                     //const cs = document.currentScript;
                     if(cs){
@@ -64,6 +111,12 @@ export interface  IXtalJsonEditorProperties{
                      * Path to get the styling
                      */
                     cssPath:{
+                        type: String
+                    },
+                    /**
+                     * Path to the js lib
+                     */
+                    jsLibPath:{
                         type: String
                     },
                     /**
@@ -121,10 +174,15 @@ export interface  IXtalJsonEditorProperties{
                 this._cssLoaded = true;
                 this.onPropsChange();
             }
+            loadedJS(){
+                this._jsLoaded = true;
+                this.onPropsChange();
+            }
             onPropsChange() {
                 if (!this.watch) return;
                 if(this.waitForOptions && !this.options) return;
                 if(!this._cssLoaded) return;
+                if(!this._jsLoaded) return;
                 //const _this = this;
                 if(!this.options) this.options = {};
                 //if(this.options){
