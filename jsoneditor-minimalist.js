@@ -3811,7 +3811,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var list = this.dom.list;
 	  this.eventListeners.mousedown = util.addEventListener(window, 'mousedown', function (event) {
 	    // hide menu on click outside of the menu
-	    var target = event.target;
+			//var target = event.target;
+			var target = event.path[0];
 	    if ((target != list) && !me._isChildOf(target, list)) {
 	      me.hide();
 	      event.stopPropagation();

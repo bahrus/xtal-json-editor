@@ -44,7 +44,7 @@
                         this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
                     }
                 }
-                console.log(this.cssPath);
+                //console.log(this.cssPath);
             }
             static get is() { return 'xtal-json-editor'; }
             static get properties() {
