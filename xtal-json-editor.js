@@ -149,6 +149,12 @@
                     }
                 };
             }
+            static get template() {
+                return `
+<link id="extCss" on-load="loadedCSS" async rel="stylesheet" type="text/css"  href="[[cssPath]]">
+<div id="xcontainer" style$="height:[[height]];width:[[width]]"></div>
+                `;
+            }
             get jsonEditor() {
                 return this._jsonEditor;
             }
@@ -189,8 +195,8 @@
         }
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
+    cs = document.currentScript;
     function WaitForPolymer() {
-        cs = document.currentScript;
         if ((typeof Polymer !== 'function') || (typeof Polymer.Element !== 'function')) {
             setTimeout(WaitForPolymer, 100);
             return;
