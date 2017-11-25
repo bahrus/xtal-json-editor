@@ -36,7 +36,7 @@ Polymer web wrapper around josdejong&#39;s awesome, most excellent JSON Editor a
     </dom-bind>
 ```
 
-Important note regarding stylesheet dependency.
+## Important note regarding stylesheet dependency.
 
 This component includes the default css file for the json editor:  jsoneditor.min.css.  You can override this default, for your own look and feel by setting:
 
@@ -45,6 +45,26 @@ This component includes the default css file for the json editor:  jsoneditor.mi
 ```
 
 This path will be relative to the hosting page url, not the component.  We are basing the default path based on document.currentScript.  But IE11 doesn't support that, so it is guessing that the path starts from /bower_components.  If you are seeing an incorrect url path in your particular environment, please try setting the cssPath directly as shown above. 
+
+## Referencing the component
+
+You can reference the component the Polymer <3 way:
+
+```html
+<link rel="import" href="../xtal-json-editor.html">
+```
+
+But if you don't want to be tied to using HTML Imports, you can instead provide your own reference to Polymer.Element independently, from wherever you choose, and just reference the javascript file directly:
+
+```html
+<script async src="../xtal-json-editor.js"></script>
+```
+
+Or you can use ES6 modules:
+
+```html
+<script type="module" src="../xtal-json-editor.js"></script>
+```
 
 ## Install the Polymer-CLI
 
