@@ -1,7 +1,19 @@
 {
+  
+  "sources":["xtal-json-editor.js", "jsoneditor-minimalist.js", "jsoneditor.min.css"],
   "lint": {
     "rules": [
       "polymer-2"
     ]
-  }
+  },
+  "builds":[
+    {
+      "name": "ES5",
+      "js": {"minify": true, "compile": true}
+    },
+    {
+      "name": "ES6",
+      "js": {"minify": true, "compile": false}
+    }    
+  ]
 }
