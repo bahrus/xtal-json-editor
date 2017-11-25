@@ -1,5 +1,3 @@
-///<reference path="node_modules/@types/jsoneditor/index.d.ts"/>
-//declare type JSONEditor = jsoneditor.JSONEditor;
 (function () {
     let cs;
     function initXtalJsonEditor() {
@@ -66,7 +64,7 @@
                 if (typeof (JSONEditor) !== 'function') {
                     if (!this.jsLibPath) {
                         if (cs) {
-                            this.jsLibPath = this.absolute(cs.baseURI, 'jsoneditor-minimalist.min.js');
+                            this.jsLibPath = this.absolute(cs.src, 'jsoneditor-minimalist.min.js');
                         }
                         else {
                             throw "Not implemented yet";
@@ -80,7 +78,7 @@
                 if (!this.cssPath) {
                     //const cs = document.currentScript;
                     if (cs) {
-                        this.cssPath = this.absolute(cs.baseURI, 'jsoneditor.min.css');
+                        this.cssPath = this.absolute(cs.src, 'jsoneditor.min.css');
                     }
                     else {
                         this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';

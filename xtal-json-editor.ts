@@ -1,11 +1,11 @@
-///<reference path="node_modules/@types/jsoneditor/index.d.ts"/>
-//declare type JSONEditor = jsoneditor.JSONEditor;
 
+//declare type JSONEditor = jsoneditor.JSONEditor;
+declare var JSONEditor;
 export interface  IXtalJsonEditorProperties{
     cssPath: string | polymer.PropObjectType,
     jsLibPath: string | polymer.PropObjectType,
     watch: object | polymer.PropObjectType,
-    options: jsoneditor.JSONEditorOptions | polymer.PropObjectType,
+    options: any | polymer.PropObjectType,
     waitForOptions: boolean | polymer.PropObjectType,
     editedResult: object | polymer.PropObjectType,
     as: string | polymer.PropObjectType,
@@ -29,9 +29,9 @@ export interface  IXtalJsonEditorProperties{
         * @demo demo/index.html
         */
         class XtalJsonEditor extends Polymer.Element implements IXtalJsonEditorProperties {
-            watch: object; options: jsoneditor.JSONEditorOptions; editedResult; waitForOptions;
+            watch: object; options: any; editedResult; waitForOptions;
             _cssLoaded: boolean;_jsLoaded: boolean;
-            _jsonEditor: JSONEditor;as;height;width;cssPath;jsLibPath;
+            _jsonEditor: any;as;height;width;cssPath;jsLibPath;
             cs = cs;
             //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
             absolute(base, relative) {
@@ -83,7 +83,7 @@ export interface  IXtalJsonEditorProperties{
                 if(typeof(JSONEditor) !== 'function'){
                     if(!this.jsLibPath){
                         if(cs){
-                            this.jsLibPath = this.absolute(cs.baseURI, 'jsoneditor-minimalist.min.js');
+                            this.jsLibPath = this.absolute(cs.src, 'jsoneditor-minimalist.min.js');
                         }else{
                             throw "Not implemented yet"
                         }
@@ -97,7 +97,7 @@ export interface  IXtalJsonEditorProperties{
                 if(!this.cssPath){
                     //const cs = document.currentScript;
                     if(cs){
-                        this.cssPath = this.absolute(cs.baseURI, 'jsoneditor.min.css');
+                        this.cssPath = this.absolute(cs.src, 'jsoneditor.min.css');
                     }else{
                         this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
                     }
