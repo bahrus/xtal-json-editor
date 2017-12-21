@@ -1,6 +1,7 @@
-const cs_src = document.currentScript['src'];
 //console.log('cs_src = ' + cs_src);
 (function () {
+    const cs_src = document.currentScript['src'];
+    console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
         if (customElements.get('xtal-json-editor')) {
             return;

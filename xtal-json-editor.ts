@@ -12,12 +12,14 @@ export interface  IXtalJsonEditorProperties{
     height: string | polymer.PropObjectType,
     width: string | polymer.PropObjectType
 }
-const cs_src = document.currentScript['src'];
+
 //console.log('cs_src = ' + cs_src);
 (function () {
     interface IDynamicJSLoadStep{
         src?: string;
     } 
+    const cs_src = document.currentScript['src'];
+    console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
 
         if (customElements.get('xtal-json-editor')){
