@@ -12,12 +12,14 @@ export interface  IXtalJsonEditorProperties{
     height: string | polymer.PropObjectType,
     width: string | polymer.PropObjectType
 }
+const cs_src = document.currentScript['src'];
+//console.log('cs_src = ' + cs_src);
 (function () {
-    let cs;
     interface IDynamicJSLoadStep{
         src?: string;
     } 
     function initXtalJsonEditor() {
+
         if (customElements.get('xtal-json-editor')){
             return;
         }
@@ -32,7 +34,7 @@ export interface  IXtalJsonEditorProperties{
             watch: object; options: any; editedResult; waitForOptions;
             _cssLoaded: boolean;_jsLoaded: boolean;
             _jsonEditor: any;as;height;width;cssPath;jsLibPath;
-            cs = cs;
+            //cs = cs;
             //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
             absolute(base, relative) {
                 var stack = base.split("/"),
@@ -82,8 +84,8 @@ export interface  IXtalJsonEditorProperties{
                 super.connectedCallback();
                 if(typeof(JSONEditor) !== 'function'){
                     if(!this.jsLibPath){
-                        if(cs){
-                            this.jsLibPath = this.absolute(cs.src, 'jsoneditor-minimalist.min.js');
+                        if(cs_src){
+                            this.jsLibPath = this.absolute(cs_src, 'jsoneditor-minimalist.min.js');
                         }else{
                             throw "Not implemented yet"
                         }
@@ -96,8 +98,8 @@ export interface  IXtalJsonEditorProperties{
                 }
                 if(!this.cssPath){
                     //const cs = document.currentScript;
-                    if(cs){
-                        this.cssPath = this.absolute(cs.src, 'jsoneditor.min.css');
+                    if(cs_src){
+                        this.cssPath = this.absolute(cs_src, 'jsoneditor.min.css');
                     }else{
                         this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
                     }
@@ -207,7 +209,7 @@ export interface  IXtalJsonEditorProperties{
         }
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
-    cs = document.currentScript;
+    
     
     function WaitForPolymer()
     {

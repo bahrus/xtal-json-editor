@@ -1,5 +1,6 @@
+const cs_src = document.currentScript['src'];
+//console.log('cs_src = ' + cs_src);
 (function () {
-    let cs;
     function initXtalJsonEditor() {
         if (customElements.get('xtal-json-editor')) {
             return;
@@ -12,10 +13,7 @@
         * @demo demo/index.html
         */
         class XtalJsonEditor extends Polymer.Element {
-            constructor() {
-                super(...arguments);
-                this.cs = cs;
-            }
+            //cs = cs;
             //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
             absolute(base, relative) {
                 var stack = base.split("/"), parts = relative.split("/");
@@ -63,8 +61,8 @@
                 super.connectedCallback();
                 if (typeof (JSONEditor) !== 'function') {
                     if (!this.jsLibPath) {
-                        if (cs) {
-                            this.jsLibPath = this.absolute(cs.src, 'jsoneditor-minimalist.min.js');
+                        if (cs_src) {
+                            this.jsLibPath = this.absolute(cs_src, 'jsoneditor-minimalist.min.js');
                         }
                         else {
                             throw "Not implemented yet";
@@ -77,8 +75,8 @@
                 }
                 if (!this.cssPath) {
                     //const cs = document.currentScript;
-                    if (cs) {
-                        this.cssPath = this.absolute(cs.src, 'jsoneditor.min.css');
+                    if (cs_src) {
+                        this.cssPath = this.absolute(cs_src, 'jsoneditor.min.css');
                     }
                     else {
                         this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
@@ -193,7 +191,6 @@
         }
         customElements.define(XtalJsonEditor.is, XtalJsonEditor);
     }
-    cs = document.currentScript;
     function WaitForPolymer() {
         if ((typeof Polymer !== 'function') || (typeof Polymer.Element !== 'function')) {
             setTimeout(WaitForPolymer, 100);
