@@ -18,7 +18,10 @@ export interface  IXtalJsonEditorProperties{
     interface IDynamicJSLoadStep{
         src?: string;
     } 
-    const cs_src = document.currentScript['src'];
+    const cs = document['_currentScript'] || document.currentScript;
+    console.log('cs = ' + cs);
+    //let cs_src;
+    const cs_src =  cs.src;
     console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
 
