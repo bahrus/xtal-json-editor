@@ -18,10 +18,19 @@ export interface  IXtalJsonEditorProperties{
     interface IDynamicJSLoadStep{
         src?: string;
     } 
-    const cs = document['_currentScript'] || document.currentScript;
-    console.log('cs = ' + cs);
+    let cs_src = '';
+    let link = document.head.querySelector('link[data-tag="xtal-json-editor"]');
+    if(link){
+        cs_src = link.getAttribute('href');
+    }else{
+        let cs = document.currentScript;
+        if(cs) {
+            cs_src = cs['src'];
+        }else{
+            cs_src = '/bower_components/xtal-json-editor/xtal-json-editor.js';
+        }
+    }
     //let cs_src;
-    const cs_src =  cs.src;
     console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
 
