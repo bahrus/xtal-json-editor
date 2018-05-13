@@ -30,8 +30,11 @@ export interface  IXtalJsonEditorProperties{
             cs_src = '/bower_components/xtal-json-editor/xtal-json-editor.js';
         }
     }
+
+    
+
     //let cs_src;
-    console.log('cs_src = ' + cs_src);
+    //console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
 
         if (customElements.get('xtal-json-editor')){

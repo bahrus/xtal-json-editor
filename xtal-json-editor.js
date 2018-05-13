@@ -15,7 +15,7 @@
         }
     }
     //let cs_src;
-    console.log('cs_src = ' + cs_src);
+    //console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
         if (customElements.get('xtal-json-editor')) {
             return;

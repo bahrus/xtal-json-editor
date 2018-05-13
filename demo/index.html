@@ -14,7 +14,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
     <script src="https://cdn.jsdelivr.net/npm/xtal-json-merge@0.1.1/build/ES6/json-merge.js"></script>
-    <script src="../xtal-json-editor.js"></script>
+    <script src="../xtal-json-editor2.js"></script>
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
@@ -27,7 +27,7 @@
         <template>
           <dom-bind>
             <template>
-                <xtal-json-editor watch="[[objectToEdit]]" edited-result="{{myEditedResult}}" as="text"></xtal-json-editor>
+                <xtal-json-editor input="[[objectToEdit]]" options="{}" edited-result="{{myEditedResult}}" as="text"></xtal-json-editor>
                 <br>
                 Edited Value: 
                 <code>[[myEditedResult]]</code>
