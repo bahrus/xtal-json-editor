@@ -1,6 +1,6 @@
 {
   "name": "xtal-json-editor",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Polymer web wrapper around josdejong&#39;s excellent JSON editor",
   "main": "xtal-json-editor.js",
   "directories": {
