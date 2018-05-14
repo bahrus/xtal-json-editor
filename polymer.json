@@ -2,7 +2,7 @@
   
   "sources":[
     "xtal-json-editor.js", 
-    "jsoneditor-minimalist.js", 
+    "jsoneditor-minimalist.min.js", 
     "jsoneditor.min.css",
     "img/jsoneditor-icons.svg"
   ],

@@ -7,7 +7,7 @@
     const template = document.createElement('template');
     let css;
     fetch(base + '/jsoneditor.min.css', {
-        credentials: 'include'
+        credentials: 'same-origin'
     }).then(resp => {
         resp.text().then(content => {
             const searchStr = 'img/jsoneditor-icons.svg';
