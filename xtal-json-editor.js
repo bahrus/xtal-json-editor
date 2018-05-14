@@ -1,197 +1,124 @@
-//console.log('cs_src = ' + cs_src);
 (function () {
-    let cs_src = '';
-    let link = document.head.querySelector('link[data-tag="xtal-json-editor"]');
-    if (link) {
-        cs_src = link.getAttribute('href');
+    const cs_src = self['xtal_json_editor'] ? xtal_json_editor.href : document.currentScript.src;
+    const base = cs_src.split('/').slice(0, -1).join('/');
+    const input = 'input';
+    const options = 'options';
+    const as = 'as';
+    const template = document.createElement('template');
+    let css;
+    fetch(base + '/jsoneditor.min.css', {
+        credentials: 'include'
+    }).then(resp => {
+        resp.text().then(content => {
+            const searchStr = 'img/jsoneditor-icons.svg';
+            css = replaceAll(content, searchStr, base + '/' + searchStr);
+            checkIfReady();
+        });
+    });
+    let jsLoaded = false;
+    const scriptTag = document.createElement('script');
+    scriptTag.src = base + '/jsoneditor-minimalist.min.js';
+    scriptTag.onload = (e => {
+        jsLoaded = true;
+        checkIfReady();
+    });
+    document.head.appendChild(scriptTag);
+    function replaceAll(str, search, replace) {
+        return str.split(search).join(replace);
     }
-    else {
-        let cs = document.currentScript;
-        if (cs) {
-            cs_src = cs['src'];
-        }
-        else {
-            cs_src = '/bower_components/xtal-json-editor/xtal-json-editor.js';
+    function checkIfReady() {
+        if (jsLoaded && css) {
+            template.innerHTML = `
+            <style>
+            :host {
+                display: block;
+            }
+            ${css}
+            </style>
+            <div id="xcontainer" style="height:100%;width:100%"></div>            
+            `;
+            initXtalJsonEditor();
         }
     }
-    //let cs_src;
-    //console.log('cs_src = ' + cs_src);
     function initXtalJsonEditor() {
-        if (customElements.get('xtal-json-editor')) {
-            return;
-        }
-        /**
-        * Polymer based web component wrapper around the awesome, most excellent JSON Editor api, which can be found at https://github.com/josdejong/jsoneditor
-        *
-        * @customElement
-        * @polymer
-        * @demo demo/index.html
-        */
-        class XtalJsonEditor extends Polymer.Element {
-            //cs = cs;
-            //from https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
-            absolute(base, relative) {
-                var stack = base.split("/"), parts = relative.split("/");
-                stack.pop(); // remove current file name (or empty string)
-                // (omit if "base" is the current folder without trailing slash)
-                for (var i = 0; i < parts.length; i++) {
-                    if (parts[i] == ".")
-                        continue;
-                    if (parts[i] == "..")
-                        stack.pop();
-                    else
-                        stack.push(parts[i]);
-                }
-                return stack.join("/");
-            }
-            downloadJSFilesInParallelButLoadInSequence(refs) {
-                //see https://www.html5rocks.com/en/tutorials/speed/script-loading/
-                return new Promise((resolve, reject) => {
-                    const notLoadedYet = {};
-                    const nonNullRefs = refs.filter(ref => ref !== null);
-                    nonNullRefs.forEach(ref => {
-                        notLoadedYet[ref.src] = true;
-                    });
-                    nonNullRefs.forEach(ref => {
-                        const script = document.createElement('script');
-                        script.src = ref.src;
-                        script.async = false;
-                        script.onload = () => {
-                            //delete notLoadedYet[script.src];
-                            Object.keys(notLoadedYet).forEach(key => {
-                                if (script.src.endsWith(key)) {
-                                    delete notLoadedYet[key];
-                                    return;
-                                }
-                            });
-                            if (Object.keys(notLoadedYet).length === 0) {
-                                resolve();
-                            }
-                        };
-                        document.head.appendChild(script);
-                    });
-                });
-            }
-            connectedCallback() {
-                super.connectedCallback();
-                if (typeof (JSONEditor) !== 'function') {
-                    if (!this.jsLibPath) {
-                        if (cs_src) {
-                            this.jsLibPath = this.absolute(cs_src, 'jsoneditor-minimalist.min.js');
-                        }
-                        else {
-                            throw "Not implemented yet";
-                        }
-                    }
-                    const refs = [{ src: this.jsLibPath }];
-                    this.downloadJSFilesInParallelButLoadInSequence(refs).then(() => {
-                        this.loadedJS();
-                    });
-                }
-                if (!this.cssPath) {
-                    //const cs = document.currentScript;
-                    if (cs_src) {
-                        this.cssPath = this.absolute(cs_src, 'jsoneditor.min.css');
-                    }
-                    else {
-                        this.cssPath = '/bower_components/xtal-json-editor/jsoneditor.min.css';
-                    }
-                }
-                //console.log(this.cssPath);
+        class XtalJsonEditor extends HTMLElement {
+            constructor() {
+                super();
+                /***********End Properties ************/
+                /***************** Attributes  */
+                this._as = 'text';
+                this._connected = false;
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.appendChild(template.content.cloneNode(true));
             }
             static get is() { return 'xtal-json-editor'; }
-            static get properties() {
-                return {
-                    /**
-                     * Path to get the styling
-                     */
-                    cssPath: {
-                        type: String
-                    },
-                    /**
-                     * Path to the js lib
-                     */
-                    jsLibPath: {
-                        type: String
-                    },
-                    /**
-                    * The expression that points to an object to edit.
-                    */
-                    watch: {
-                        type: Object,
-                        observer: 'onPropsChange'
-                    },
-                    /**
-                     * JsonEditor options, implements jsoneditor.JSONEditorOptions
-                     */
-                    options: {
-                        type: Object,
-                        observer: 'onPropsChange'
-                    },
-                    /**
-                     * Don't bind editor to JSON object until options are set
-                     */
-                    waitForOptions: {
-                        type: Boolean,
-                        observer: 'onPropsChange'
-                    },
-                    /**
-                     * Expression for where to place the results of the edited json
-                     */
-                    editedResult: {
-                        type: Object,
-                        notify: true,
-                        readOnly: true
-                    },
-                    /**
-                     * Specify format for results:  text or json
-                     */
-                    as: {
-                        type: String,
-                        value: 'text'
-                    },
-                    height: {
-                        type: String,
-                        value: '400px'
-                    },
-                    width: {
-                        type: String,
-                        value: '400px'
-                    }
-                };
+            get input() {
+                return this._input;
             }
-            static get template() {
-                return `
-<link id="extCss" on-load="loadedCSS" async rel="stylesheet" type="text/css"  href="[[cssPath]]">
-<div id="xcontainer" style$="height:[[height]];width:[[width]]"></div>
-                `;
-            }
-            get jsonEditor() {
-                return this._jsonEditor;
-            }
-            loadedCSS() {
-                this._cssLoaded = true;
+            set input(val) {
+                this._input = val;
                 this.onPropsChange();
             }
-            loadedJS() {
-                this._jsLoaded = true;
+            get options() {
+                return this._options;
+            }
+            set options(val) {
+                this._options = val;
+                this.onPropsChange();
+            }
+            get editedResult() {
+                return this._editedResult;
+            }
+            set editedResult(val) {
+                this._editedResult = val;
+                const editedResultChangedEvent = new CustomEvent('edited-result-changed', {
+                    detail: {
+                        value: val
+                    },
+                    bubbles: true,
+                    composed: false,
+                });
+                this.dispatchEvent(editedResultChangedEvent);
+            }
+            get as() {
+                return this._as;
+            }
+            set as(val) {
+                this.setAttribute(as, val);
+            }
+            static get observedAttributes() {
+                return [input, options, as];
+            }
+            _upgradeProperties(props) {
+                props.forEach(prop => {
+                    if (this.hasOwnProperty(prop)) {
+                        let value = this[prop];
+                        delete this[prop];
+                        this[prop] = value;
+                    }
+                });
+            }
+            attributeChangedCallback(name, oldVal, newVal) {
+                switch (name) {
+                    case input:
+                    case options:
+                        this[name] = JSON.parse(newVal);
+                        break;
+                    case as:
+                        this._as = newVal;
+                        break;
+                }
+            }
+            connectedCallback() {
+                this._connected = true;
+                this._upgradeProperties([input, options, as]);
                 this.onPropsChange();
             }
             onPropsChange() {
-                if (!this.watch)
+                if (!this._connected || !this._input || !this._options)
                     return;
-                if (this.waitForOptions && !this.options)
-                    return;
-                if (!this._cssLoaded)
-                    return;
-                if (!this._jsLoaded)
-                    return;
-                //const _this = this;
-                if (!this.options)
-                    this.options = {};
-                //if(this.options){
-                if (!this.options.onChange) {
-                    this.options.onChange = () => {
+                if (!this._options['onChange']) {
+                    this.options['onChange'] = () => {
                         let result = this._jsonEditor.get();
                         if (this.as === 'text')
                             result = JSON.stringify(result);
@@ -199,20 +126,15 @@
                     };
                 }
                 //}
-                this.$.xcontainer.innerHTML = '';
-                this._jsonEditor = new JSONEditor(this.$.xcontainer, this.options);
-                this._jsonEditor.set(this.watch);
+                const container = this.shadowRoot.querySelector('#xcontainer');
+                container.innerHTML = '';
+                this._jsonEditor = new JSONEditor(container, this.options);
+                this._jsonEditor.set(this._input);
             }
         }
-        customElements.define(XtalJsonEditor.is, XtalJsonEditor);
-    }
-    function WaitForPolymer() {
-        if ((typeof Polymer !== 'function') || (typeof Polymer.Element !== 'function')) {
-            setTimeout(WaitForPolymer, 100);
-            return;
+        if (!customElements.get(XtalJsonEditor.is)) {
+            customElements.define(XtalJsonEditor.is, XtalJsonEditor);
         }
-        initXtalJsonEditor();
     }
-    WaitForPolymer();
 })();
 //# sourceMappingURL=xtal-json-editor.js.map
