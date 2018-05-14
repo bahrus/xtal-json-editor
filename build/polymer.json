@@ -5,11 +5,11 @@
     "xtal-json-editor.js",
     "jsoneditor-minimalist.js",
     "jsoneditor.min.css",
-    "img\\jsoneditor-icons.svg",
+    "img/jsoneditor-icons.svg",
     "index.html"
   ],
   "extraDependencies": [
-    "bower_components\\webcomponentsjs\\*.js"
+    "bower_components/webcomponentsjs/*.js"
   ],
   "builds": [
     {
@@ -31,5 +31,6 @@
     "rules": [
       "polymer-2"
     ]
-  }
+  },
+  "moduleResolution": "node"
 }
