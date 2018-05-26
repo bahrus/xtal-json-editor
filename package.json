@@ -1,7 +1,11 @@
 {
   "name": "xtal-json-editor",
+  "version": "0.0.22",
   "description": "Dependency free web component wrapper around the JSONEditor library",
   "main": "xtal-json-editor.js",
+  "repository": "https://github.com/bahrus/xtal-json-editor",
+  "author": "bahrus <anderson.bruce.b@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@polymer/polymer": "^3.0.0"
   },
@@ -9,6 +13,6 @@
     "@polymer/iron-demo-helpers": "^3.0.0-pre.12",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "wct-browser-legacy": "^1.0.0"
-  },
-  "version": "0.0.22"
+  }
+  
 }
