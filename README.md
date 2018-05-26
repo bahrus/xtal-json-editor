@@ -6,7 +6,7 @@
 
 Vanilla web component wrapper around josdejong&#39;s awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
 
-[Demo](demo/index.html)
+[Demo](https://xtal-json-editor-demo.glitch.me/)
 
 ## Install the Polymer-CLI
 
