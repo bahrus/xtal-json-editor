@@ -1,9 +1,12 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/bahrus/xtal-json-editor)
 
+<a href="https://nodei.co/npm/xtal-json-editor/"><img src="https://nodei.co/npm/xtal-json-editor.png"></a>
+
 # \<xtal-json-editor\>
 
-Depdnedncy free web wrapper around josdejong&#39;s awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
+Vanilla web component wrapper around josdejong&#39;s awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
 
+[Demo](demo/index.html)
 
 ## Install the Polymer-CLI
 
