@@ -29,7 +29,7 @@ The markup above is using the [pass down element (p-d)](https://www.webcomponent
     <script src="https://unpkg.com/p-d.p-u@0.0.37/p-d.p-d-x.p-u.js"></script>
     <h3>Basic xtal-json-editor demo</h3>
     <div>Input:</div>
-    <xtal-json-merge input="[]" pass-to="#firstEditor{input:detail.value}">
+    <xtal-json-merge input="[]">
       <script type="application/json">
           [
             [
