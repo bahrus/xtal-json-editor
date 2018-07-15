@@ -85,6 +85,7 @@ class XtalJsonEditor extends XtallatX(HTMLElement) {
     }
     set editedResult(val) {
         this._editedResult = val;
+        this.value = val;
         this.de('edited-result', {
             value: val
         });
