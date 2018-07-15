@@ -4,9 +4,9 @@
 
 # \<xtal-json-editor\>
 
-Vanilla web component wrapper around josdejong&#39;s awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
+Vanilla web component wrapper around josdejong's awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
 
-Although the web component does not depend on Polymer, it can work with it's binding.  The output of the editor can either be text, or JSON, as specified by the as attribute:  
+Although the web component does not depend on Polymer, it can work with its binding.  The output of the editor can either be text, or JSON, as specified by the as attribute:  
 
 ```html
     <div>Input:</div>
