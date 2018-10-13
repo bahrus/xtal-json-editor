@@ -3,6 +3,7 @@
   "fragments": [],
   "sources": [
     "xtal-json-editor.js",
+    "xtal-json-editor.iife.js",
     "jsoneditor-minimalist.min.js",
     "jsoneditor.min.css",
     "img/jsoneditor-icons.svg",
