@@ -1,6 +1,6 @@
 {
   "name": "xtal-json-editor",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "Dependency free web component wrapper around the JSONEditor library",
   "main": "xtal-json-editor.js",
   "repository": "https://github.com/bahrus/xtal-json-editor",
