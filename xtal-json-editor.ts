@@ -2,7 +2,7 @@ declare class JSONEditor{
     constructor(a,b);
 }
 import {XtallatX} from 'xtal-latx/xtal-latx.js';
-
+import {define} from 'xtal-latx/define.js';
 
 //firefox-induced car crash
 let cs_src: string;
@@ -14,8 +14,8 @@ if(preloadLink){
     if(cs){
         cs_src = cs.src;
     }else{
-        //cs_src = [import.meta.url];  TODO: put back when typescript supports this
-        cs_src = "https://unpkg.com/xtal-json-editor/xtal-json-editor.esm.js";
+        cs_src = import.meta['url'];  
+        
     }
 }
 const base = cs_src.split('/').slice(0, -1).join('/');
@@ -95,11 +95,12 @@ class XtalJsonEditor extends XtallatX(HTMLElement)  {
         this.onPropsChange();
     }
 
+    value: any;
     _editedResult: object;
     get editedResult() {
         return this._editedResult;
     }
-
+    
     set editedResult(val: object) {
         this._editedResult = val;
         this.value = val;
@@ -156,7 +157,5 @@ class XtalJsonEditor extends XtallatX(HTMLElement)  {
 }
 
 function init() {
-    if (!customElements.get(XtalJsonEditor.is)) {
-        customElements.define(XtalJsonEditor.is, XtalJsonEditor);
-    }
+    define(XtalJsonEditor);
 }

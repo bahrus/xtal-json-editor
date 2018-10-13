@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ES6",
-		"module":"es2015",
+		"target": "esnext",
+		"module":"esnext",
 		"sourceMap": true,
 		"experimentalDecorators": true,
 		"newLine": "LF"
