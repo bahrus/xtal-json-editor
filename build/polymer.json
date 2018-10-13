@@ -30,7 +30,7 @@
   ],
   "lint": {
     "rules": [
-      "polymer-2"
+      "polymer-3"
     ]
   },
   "moduleResolution": "node"
