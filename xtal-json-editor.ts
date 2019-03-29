@@ -1,23 +1,11 @@
 declare class JSONEditor{
     constructor(a,b);
 }
-import {XtallatX} from 'xtal-latx/xtal-latx.js';
-import {define} from 'xtal-latx/define.js';
+import {XtallatX} from 'xtal-element/xtal-latx.js';
+import {define} from 'xtal-element/define.js';
 
-//firefox-induced car crash
-let cs_src: string;
-const preloadLink = self['xtal_json_editor'];
-if(preloadLink){
-    cs_src = preloadLink.href;
-}else{
-    const cs = (document.currentScript as HTMLScriptElement);
-    if(cs){
-        cs_src = cs.src;
-    }else{
-        cs_src = import.meta['url'];  
-        
-    }
-}
+const cs_src = import.meta['url'];
+
 const base = cs_src.split('/').slice(0, -1).join('/');
 
 // declare var JSONEditor;

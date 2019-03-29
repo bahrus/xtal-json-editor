@@ -1,20 +1,6 @@
-import { XtallatX } from 'xtal-latx/xtal-latx.js';
-import { define } from 'xtal-latx/define.js';
-//firefox-induced car crash
-let cs_src;
-const preloadLink = self['xtal_json_editor'];
-if (preloadLink) {
-    cs_src = preloadLink.href;
-}
-else {
-    const cs = document.currentScript;
-    if (cs) {
-        cs_src = cs.src;
-    }
-    else {
-        cs_src = import.meta['url'];
-    }
-}
+import { XtallatX } from 'xtal-element/xtal-latx.js';
+import { define } from 'xtal-element/define.js';
+const cs_src = import.meta['url'];
 const base = cs_src.split('/').slice(0, -1).join('/');
 const input = 'input';
 const options = 'options';
@@ -136,4 +122,3 @@ class XtalJsonEditor extends XtallatX(HTMLElement) {
 function init() {
     define(XtalJsonEditor);
 }
-//# sourceMappingURL=xtal-json-editor.js.map
