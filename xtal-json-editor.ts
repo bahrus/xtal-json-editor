@@ -2,7 +2,8 @@ declare class JSONEditor{
     constructor(a,b);
 }
 import {XtallatX} from 'xtal-element/xtal-latx.js';
-import {define} from 'xtal-element/define.js';
+import {define} from 'trans-render/define.js';
+import {up, hydrate} from 'trans-render/hydrate.js';
 
 const cs_src = import.meta['url'];
 
@@ -56,7 +57,7 @@ function checkIfReady() {
 }
 
 
-class XtalJsonEditor extends XtallatX(HTMLElement)  {
+class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     static get is() { return 'xtal-json-editor'; }
     constructor() {
         super();
@@ -123,7 +124,7 @@ class XtalJsonEditor extends XtallatX(HTMLElement)  {
     _connected = false;
     connectedCallback() {
         this._connected = true;
-        this._upgradeProperties([input, options, as])
+        this[up]([input, options, as])
         this.onPropsChange();
     }
     _jsonEditor: any;

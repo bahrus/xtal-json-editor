@@ -1,5 +1,6 @@
 import { XtallatX } from 'xtal-element/xtal-latx.js';
-import { define } from 'xtal-element/define.js';
+import { define } from 'trans-render/define.js';
+import { up, hydrate } from 'trans-render/hydrate.js';
 const cs_src = import.meta['url'];
 const base = cs_src.split('/').slice(0, -1).join('/');
 const input = 'input';
@@ -41,7 +42,7 @@ function checkIfReady() {
         init();
     }
 }
-class XtalJsonEditor extends XtallatX(HTMLElement) {
+class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super();
         /***********End Properties ************/
@@ -98,7 +99,7 @@ class XtalJsonEditor extends XtallatX(HTMLElement) {
     }
     connectedCallback() {
         this._connected = true;
-        this._upgradeProperties([input, options, as]);
+        this[up]([input, options, as]);
         this.onPropsChange();
     }
     onPropsChange() {
