@@ -1,6 +1,6 @@
 import { XtallatX } from 'xtal-element/xtal-latx.js';
 import { define } from 'trans-render/define.js';
-import { up, hydrate } from 'trans-render/hydrate.js';
+import { hydrate } from 'trans-render/hydrate.js';
 const cs_src = import.meta['url'];
 const base = cs_src.split('/').slice(0, -1).join('/');
 const input = 'input';
@@ -99,7 +99,7 @@ class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     }
     connectedCallback() {
         this._connected = true;
-        this[up]([input, options, as]);
+        this.propUp([input, options, as]);
         this.onPropsChange();
     }
     onPropsChange() {

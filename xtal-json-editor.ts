@@ -3,7 +3,7 @@ declare class JSONEditor{
 }
 import {XtallatX} from 'xtal-element/xtal-latx.js';
 import {define} from 'trans-render/define.js';
-import {up, hydrate} from 'trans-render/hydrate.js';
+import {hydrate} from 'trans-render/hydrate.js';
 
 const cs_src = import.meta['url'];
 
@@ -124,7 +124,7 @@ class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     _connected = false;
     connectedCallback() {
         this._connected = true;
-        this[up]([input, options, as])
+        this.propUp([input, options, as])
         this.onPropsChange();
     }
     _jsonEditor: any;
