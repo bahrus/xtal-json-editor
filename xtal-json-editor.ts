@@ -57,7 +57,7 @@ function checkIfReady() {
 }
 
 
-class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
+export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     static get is() { return 'xtal-json-editor'; }
     constructor() {
         super();

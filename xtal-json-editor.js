@@ -42,7 +42,7 @@ function checkIfReady() {
         init();
     }
 }
-class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
+export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super();
         /***********End Properties ************/
