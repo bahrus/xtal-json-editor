@@ -5,6 +5,7 @@ const cs_src = import.meta['url'];
 const base = cs_src.split('/').slice(0, -1).join('/');
 const input = 'input';
 const options = 'options';
+const archive = 'archive';
 const as = 'as';
 const template = document.createElement('template');
 let css;
@@ -45,6 +46,7 @@ function checkIfReady() {
 export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super();
+        this._history = [];
         /***********End Properties ************/
         /***************** Attributes  */
         this._as = 'text';
@@ -54,10 +56,15 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     }
     static get is() { return 'xtal-json-editor'; }
     get input() {
-        return this._input;
+        return this._archive ? this._history : this._input;
     }
     set input(val) {
-        this._input = val;
+        if (this._archive) {
+            this._history.push(val);
+        }
+        else {
+            this._input = val;
+        }
         this.onPropsChange();
     }
     get options() {
@@ -66,6 +73,12 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     set options(val) {
         this._options = val;
         this.onPropsChange();
+    }
+    get archive() {
+        return this._archive;
+    }
+    set archive(nv) {
+        this.attr(archive, nv, '');
     }
     get editedResult() {
         return this._editedResult;
@@ -84,7 +97,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
         this.attr(as, val);
     }
     static get observedAttributes() {
-        return super.observedAttributes.concat([input, options, as]);
+        return super.observedAttributes.concat([input, options, as, archive]);
     }
     attributeChangedCallback(name, oldVal, newVal) {
         switch (name) {
@@ -94,6 +107,9 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
                 break;
             case as:
                 this._as = newVal;
+                break;
+            case archive:
+                this._archive = newVal !== null;
                 break;
         }
     }

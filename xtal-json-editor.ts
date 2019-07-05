@@ -18,6 +18,7 @@ interface IDynamicJSLoadStep {
 }
 const input = 'input';
 const options = 'options';
+const archive = 'archive';
 const as = 'as';
 const template = document.createElement('template');
 let css: string;
@@ -66,11 +67,17 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     }
     /************ Properties *****************/
     _input: object;
+    _history: object[] = [];
     get input() {
-        return this._input;
+        return this._archive ? this._history : this._input;
     }
     set input(val) {
-        this._input = val;
+        if(this._archive){
+            this._history.push(val);
+        }else{
+            this._input = val;
+        }
+        
         this.onPropsChange();
     }
 
@@ -82,6 +89,14 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     set options(val) {
         this._options = val;
         this.onPropsChange();
+    }
+
+    _archive: boolean;
+    get archive(){
+        return this._archive;
+    }
+    set archive(nv){
+        this.attr(archive, nv, '');
     }
 
     value: any;
@@ -107,7 +122,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
         this.attr(as, val)
     }
     static get observedAttributes() {
-        return super.observedAttributes.concat([input, options, as]);
+        return super.observedAttributes.concat([input, options, as, archive]);
     }
     attributeChangedCallback(name: string, oldVal: string, newVal: string) {
         switch (name) {
@@ -118,6 +133,10 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
             case as:
                 this._as = newVal;
                 break;
+            case archive:
+                this._archive = newVal !== null;
+                break;
+
         }
     }
 
