@@ -46,7 +46,9 @@ function checkIfReady() {
 export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super();
-        this._history = [];
+        /************ Properties *****************/
+        this._input = undefined;
+        this._history = undefined;
         /***********End Properties ************/
         /***************** Attributes  */
         this._as = 'text';
@@ -60,6 +62,8 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     }
     set input(val) {
         if (this._archive) {
+            if (this._history === undefined)
+                this._history = [];
             this._history.push(val);
         }
         else {
@@ -119,7 +123,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
         this.onPropsChange();
     }
     onPropsChange() {
-        if (!this._connected || !this._input || !this._options)
+        if (!this._connected || (this._input === undefined && !this._history === undefined) || !this._options)
             return;
         if (!this._options['onChange']) {
             this.options['onChange'] = () => {
@@ -133,7 +137,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
         const container = this.shadowRoot.querySelector('#xcontainer');
         container.innerHTML = '';
         this._jsonEditor = new JSONEditor(container, this.options);
-        this._jsonEditor.set(this._input);
+        this._jsonEditor.set(this._input || this._history);
     }
 }
 function init() {

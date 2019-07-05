@@ -66,13 +66,14 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
     /************ Properties *****************/
-    _input: object;
-    _history: object[] = [];
+    _input: object | undefined = undefined;
+    _history: object[] | undefined = undefined;
     get input() {
         return this._archive ? this._history : this._input;
     }
     set input(val) {
         if(this._archive){
+            if(this._history === undefined) this._history = [];
             this._history.push(val);
         }else{
             this._input = val;
@@ -148,7 +149,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     }
     _jsonEditor: any;
     onPropsChange() {
-        if (!this._connected || !this._input || !this._options) return;
+        if (!this._connected || (this._input === undefined && !this._history === undefined) || !this._options) return;
         if (!this._options['onChange']) {
             this.options['onChange'] = () => {
                 let result = this._jsonEditor.get();
@@ -160,7 +161,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
         const container = this.shadowRoot.querySelector('#xcontainer');
         container.innerHTML = '';
         this._jsonEditor = new JSONEditor(container, this.options);
-        this._jsonEditor.set(this._input);
+        this._jsonEditor.set(this._input || this._history);
     }
 }
 
