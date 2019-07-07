@@ -119,7 +119,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     }
     connectedCallback() {
         this._connected = true;
-        this.propUp([input, options, as]);
+        this.propUp([input, options, as, archive]);
         this.onPropsChange();
     }
     onPropsChange() {

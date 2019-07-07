@@ -144,7 +144,7 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement))  {
     _connected = false;
     connectedCallback() {
         this._connected = true;
-        this.propUp([input, options, as])
+        this.propUp([input, options, as, archive])
         this.onPropsChange();
     }
     _jsonEditor: any;
