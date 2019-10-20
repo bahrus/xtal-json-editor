@@ -2,7 +2,7 @@
 
 <a href="https://nodei.co/npm/xtal-json-editor/"><img src="https://nodei.co/npm/xtal-json-editor.png"></a>
 
-
+<img src="https://badgen.net/bundlephobia/minzip/xtal-json-editor">
 
 # \<xtal-json-editor\>
 
@@ -72,16 +72,12 @@ The markup above is using the [pass down element (p-d)](https://www.webcomponent
 ```
 -->
 
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) and npm (packaged with [Node.js](https://nodejs.org)) installed. Run `npm install` to install your element's dependencies, then run `polymer serve` to serve your element locally.
 
 ## Viewing Your Element
 
 ```
-$ polymer serve
+$ npm install
+$ npm run serve
 ```
 
-## Running Tests
 
-WIP

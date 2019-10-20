@@ -5,9 +5,10 @@ import {XtallatX} from 'xtal-element/xtal-latx.js';
 import {define} from 'trans-render/define.js';
 import {hydrate} from 'trans-render/hydrate.js';
 
-const cs_src = import.meta['url'];
+//const cs_src = import.meta['url']; //bundlephobia still doesn;t support
 
-const base = cs_src.split('/').slice(0, -1).join('/');
+//const base = cs_src.split('/').slice(0, -1).join('/');
+const base = 'https://unpkg.com/xtal-json-editor@0.0.40';
 
 // declare var JSONEditor;
 declare var xtal_json_editor;
