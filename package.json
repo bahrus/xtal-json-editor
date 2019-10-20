@@ -7,11 +7,17 @@
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "xtal-element": "0.0.76",
-    "trans-render": "0.0.126"
+    "xtal-element": "0.0.86",
+    "trans-render": "0.0.135"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.10",
-    "jiife": "0.0.12"
+    "@webcomponents/webcomponentsjs": "2.3.0",
+    "jiife": "0.0.14",
+    "xtal-test": "0.0.20",
+    "es-module-shims": "0.4.5"
+  },
+  "scripts": {
+    "serve": "node node_modules/xtal-test/serve.js",
+    "doc": "wca analyze xtal-json-editor.js --outFile custom-elements.json"
   }
 }

@@ -43,12 +43,17 @@ function checkIfReady() {
         init();
     }
 }
+/**
+ * @element xtal-json-editor
+ * @event edited-result-changed
+ */
 export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super();
         /************ Properties *****************/
         this._input = undefined;
         this._history = undefined;
+        this._archive = false;
         /***********End Properties ************/
         /***************** Attributes  */
         this._as = 'text';
@@ -60,6 +65,10 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     get input() {
         return this._archive ? this._history : this._input;
     }
+    /**
+     * Object to edit / view
+     * @attr
+     */
     set input(val) {
         if (this._archive) {
             if (this._history === undefined)
@@ -74,6 +83,10 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     get options() {
         return this._options;
     }
+    /**
+     * Options for JSON Editor.  See https://github.com/josdejong/jsoneditor/blob/master/docs/api.md#configuration-options
+     * @attr
+     */
     set options(val) {
         this._options = val;
         this.onPropsChange();
@@ -81,12 +94,19 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     get archive() {
         return this._archive;
     }
+    /**
+     * Archive previous values
+     * @attr
+     */
     set archive(nv) {
         this.attr(archive, nv, '');
     }
     get editedResult() {
         return this._editedResult;
     }
+    /**
+     * Edited result
+     */
     set editedResult(val) {
         this._editedResult = val;
         this.value = val;
@@ -97,6 +117,10 @@ export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
     get as() {
         return this._as;
     }
+    /**
+     * Indicated whether edited result should be stringified as text.
+     * @attr
+     */
     set as(val) {
         this.attr(as, val);
     }

@@ -16,7 +16,7 @@ Although the web component does not depend on Polymer, it can work with its bind
     <xtal-json-editor options="{}"></xtal-json-editor>
 ```
 
-The markup above is using the [pass down element (p-d)](https://www.webcomponents.org/element/p-d.p-u) to bind the two instances together, but you can also use Polymer or custom event handling.
+The markup above is using the [pass down element (p-d)](https://www.webcomponents.org/element/p-et-alia) to bind the two instances together, but you can also use Polymer or custom event handling.
 
 <!--
 ```
