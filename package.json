@@ -3,6 +3,7 @@
   "version": "0.0.39",
   "description": "Dependency free web component wrapper around the JSONEditor library",
   "main": "xtal-json-editor.js",
+  "module": "xtal-json-editor.js",
   "repository": "https://github.com/bahrus/xtal-json-editor",
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
