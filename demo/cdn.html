@@ -20,10 +20,8 @@
   <div data-pd>
     <pass-down></pass-down>
     <h3>Basic xtal-json-editor demo</h3>
-    <p>Instructions:  Edit the object below and see the values reflected the second JSON Editor (which will appear after making an edit)</p>
-    <xtal-insert-json input="{}"
-      data-on="merged-prop-changed: pass-to-next:{input:target.value}"
-    >
+
+    <xtal-insert-json disabled input="{}">
       <script type="application/json">
         [{
           "data": [
@@ -47,17 +45,17 @@
         }]
       </script>
     </xtal-insert-json>
-
-    <xtal-json-editor options="{}" as="json"
+    <p-d on=merged-prop-changed to=[-input] m=1></p-d>
+    <xtal-json-editor -input options="{}" as="json"
       data-on="edited-result-changed: pass-to:xtal-json-editor{input:target.value}{1}"
     ></xtal-json-editor>
-
+    <p-d on=edited-result-changed to=[-input] m=1></p-d>
     <div>Edited:</div>
-    <xtal-json-editor options="{}" as="json"></xtal-json-editor>
-    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/pass-down@0.0.10/pass-down.iife.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-json-merge@0.2.32/json-merge.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xtal-json-editor@0.0.31/xtal-json-editor.iife.js"></script>
+    <xtal-json-editor -input options='{"mode":"view"}' as="json"></xtal-json-editor>
+    <script type=module src="https://cdn.pika.dev/pass-down"></script>
+    <script type=module src="https://cdn.pika.dev/xtal-json-merge"></script>
+    <script type=module src="https://unpkg.com/xtal-json-editor@0.0.40/xtal-json-editor.js?module"></script>
+
   </div>
 </body>
 

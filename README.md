@@ -2,6 +2,8 @@
 
 <a href="https://nodei.co/npm/xtal-json-editor/"><img src="https://nodei.co/npm/xtal-json-editor.png"></a>
 
+
+
 # \<xtal-json-editor\>
 
 Vanilla web component wrapper around josdejong's awesome, most excellent JSON Editor api, which can be found at  https://github.com/josdejong/jsoneditor
