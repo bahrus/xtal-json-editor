@@ -80,4 +80,10 @@ $ npm install
 $ npm run serve
 ```
 
+or
+
+```html
+<script type=module src="https://cdn.pika.dev/xtal-json-editor"></script>
+```
+
 
