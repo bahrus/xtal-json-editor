@@ -8,6 +8,11 @@
 </head>
 <body>
   <div>
+      <style>
+        [data-type="object"]>input[data-var="key"]{
+          background-color:#B1C639;
+        }
+      </style>
       <details>
         <summary>
           <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr></p-d-x-get-val-type>
