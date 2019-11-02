@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
   <div>
-      <style>
-        [data-type="object"]>input[data-var="key"]{
-          background-color:#B1C639;
-        }
-      </style>
-      <details>
-        <summary>
-          <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr></p-d-x-get-val-type>
-          <div -data-type>
-              <input data-var="key"><input data-var=value>
-          </div>
-          
-          
-        </summary>
-      </details>
-        <!-- Use experimental import maps -->
-        <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
-        <script type="importmap-shim">
+    <style>
+      input {
+        border: none;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        padding: 3px;
+        margin-right: 2px;
+      }
+
+      [data-type="boolean"]>input[data-var="key"] {
+        background-color: #B1C639;
+      }
+
+      [data-type="object"]>input[data-var="key"] {
+        background-color: #E17000;
+      }
+    </style>
+    <details>
+      <summary>
+        <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr>
+        </p-d-x-get-val-type>
+        <button>Add New Value</button>
+        <section>
+            <div -data-type>
+                <input data-var="key"><input data-var=value>
+            </div>
+        </section>
+        
+
+
+      </summary>
+    </details>
+    <!-- Use experimental import maps -->
+    <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
         {
           "imports": {
             "xtal-element/": "../node_modules/xtal-element/",
@@ -34,10 +54,11 @@
           }
         }
         </script>
-        <script  type="module-shim">
+    <script type="module-shim">
             import 'p-et-alia/p-d.js';
             import '../xtal-json-editor.js';
         </script>
   </div>
 </body>
+
 </html>
