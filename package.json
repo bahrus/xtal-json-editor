@@ -11,6 +11,7 @@
     "xtal-element": "0.0.87",
     "trans-render": "0.0.136",
     "p-et-alia": "0.0.53",
+    "if-diff": "0.0.36",
     "carbon-copy": "0.1.46"
   },
   "devDependencies": {

@@ -1,34 +1,35 @@
-//import {XtalJson} from './xtal-json-object.js';
-import { extend } from "p-et-alia/p-d-x.js";
 import { XtalElement } from "xtal-element/xtal-element.js";
 import { createTemplate } from "xtal-element/utils.js";
 import { define } from 'trans-render/define.js';
-extend({
-    name: "get-val-type",
-    valFromEvent: (e) => {
-        const txt = e.target;
-        const val = txt.value.trim();
-        const val0 = val[0];
-        const valC = val[val.length - 1];
-        if (val0 === '"' && valC === '"') {
-            return "string";
+import("./xtal-json-object.js");
+import('p-et-alia/p-d-x.js').then(module => {
+    module.extend({
+        name: "get-val-type",
+        valFromEvent: (e) => {
+            const txt = e.target;
+            const val = txt.value.trim();
+            const val0 = val[0];
+            const valC = val[val.length - 1];
+            if (val0 === '"' && valC === '"') {
+                return "string";
+            }
+            else if (val0 === "{" && valC === "}") {
+                return "object";
+            }
+            else if (val0 === "[" && valC === "]") {
+                return "array";
+            }
+            else if (!isNaN(val)) {
+                return "number";
+            }
+            else if (val === "true" || val === "false") {
+                return "boolean";
+            }
+            else {
+                return "unknown";
+            }
         }
-        else if (val0 === "{" && valC === "}") {
-            return "object";
-        }
-        else if (val0 === "[" && valC === "]") {
-            return "array";
-        }
-        else if (!isNaN(val)) {
-            return "number";
-        }
-        else if (val === "true" || val === "false") {
-            return "boolean";
-        }
-        else {
-            return "unknown";
-        }
-    }
+    });
 });
 const mainTemplate = createTemplate(/* html */ `
     <style>
@@ -57,22 +58,32 @@ const mainTemplate = createTemplate(/* html */ `
         <details>
           <summary>
             <button data-copy=true>Add New Value</button>
-            <p-d on="click" to=[-copy] val=target.dataset.copy skip-init></p-d>
+            <p-d on="click" to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
             <b-c-c -copy from=entity noclear noshadow></b-c-c>
           </summary>
         </details>
     </template>
     <template id=entity>
         <section>
-            <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr></p-d-x-get-val-type>
+            <p-d-x-get-val-type  
+                on=input if="[data-var='value']" to=[-data-type] set-attr m=1
+            ></p-d-x-get-val-type>
+            <p-d-x-get-val-type  
+                on=input if="[data-var='value']" to=[-lhs] val=target.dataset.type m=1
+            ></p-d-x-get-val-type>
             <div -data-type data-type=unknown>
-                <input data-var="key"><input data-var=value>
+                <input data-var="key"><input disabled=2 data-var=value>
+            </div>
+            <if-diff if -lhs equals rhs="object" data-key-name=isObject></if-diff>
+            <div data-is-object=0>
+                <template>
+                    <xtal-json-object></xtal-json-object>
+                </template>
             </div>
         </section>      
     </template>
     <xtal-json-object></xtal-json-object>
 `);
-import("./xtal-json-object.js");
 export class XtalJsonEditor extends XtalElement {
     static get is() {
         return "xtal-json-editor";
