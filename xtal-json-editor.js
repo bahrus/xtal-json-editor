@@ -56,11 +56,10 @@ const mainTemplate = createTemplate(/* html */ `
     </style>
     <template id=object>
         <details>
-          <summary>
+            <summary>+</summary>
             <button data-copy=true>Add New Value</button>
             <p-d on="click" to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
             <b-c-c -copy from=entity noclear noshadow></b-c-c>
-          </summary>
         </details>
     </template>
     <template id=entity>
