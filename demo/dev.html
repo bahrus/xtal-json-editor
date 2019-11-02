@@ -27,14 +27,21 @@
       [data-type="object"]>input[data-var="key"] {
         background-color: #E17000;
       }
+
+      [data-type="unknown"]>input[data-var="key"] {
+        background-color: rgb(223, 181, 210);
+      }
     </style>
+    <template id=entity>
+      
+    </template>
     <details>
       <summary>
-        <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr>
-        </p-d-x-get-val-type>
+
         <button>Add New Value</button>
         <section>
-            <div -data-type>
+            <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr></p-d-x-get-val-type>
+            <div -data-type data-type=unknown>
                 <input data-var="key"><input data-var=value>
             </div>
         </section>
@@ -50,13 +57,15 @@
           "imports": {
             "xtal-element/": "../node_modules/xtal-element/",
             "trans-render/": "../node_modules/trans-render/",
-            "p-et-alia/": "../node_modules/p-et-alia/"
+            "p-et-alia/": "../node_modules/p-et-alia/",
+            "carbon-copy/": "../node_modules/carbon-copy/"
           }
         }
         </script>
     <script type="module-shim">
             import 'p-et-alia/p-d.js';
             import '../xtal-json-editor.js';
+            import 'carbon-copy/b-c-c.js';
         </script>
   </div>
 </body>
