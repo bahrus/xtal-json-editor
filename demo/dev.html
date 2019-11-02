@@ -33,18 +33,20 @@
       }
     </style>
     <template id=entity>
-      
-    </template>
-    <details>
-      <summary>
-
-        <button>Add New Value</button>
         <section>
             <p-d-x-get-val-type if="[data-var='value']" on=input to=[-data-type] val=target.dataset.type set-attr></p-d-x-get-val-type>
             <div -data-type data-type=unknown>
                 <input data-var="key"><input data-var=value>
             </div>
-        </section>
+        </section>      
+    </template>
+    <details>
+      <summary>
+
+        <button data-copy=true>Add New Value</button>
+        <p-d on="click" to=[-copy] val=target.dataset.copy skip-init></p-d>
+        <b-c-c -copy from="/entity" noshadow></b-c-c>
+
         
 
 
