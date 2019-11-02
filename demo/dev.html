@@ -40,18 +40,16 @@
             </div>
         </section>      
     </template>
-    <details>
-      <summary>
-
-        <button data-copy=true>Add New Value</button>
-        <p-d on="click" to=[-copy] val=target.dataset.copy skip-init></p-d>
-        <b-c-c -copy from="/entity" noclear noshadow></b-c-c>
-
-        
-
-
-      </summary>
-    </details>
+  <template id=object>
+      <details>
+          <summary>
+            <button data-copy=true>Add New Value</button>
+            <p-d on="click" to=[-copy] val=target.dataset.copy skip-init></p-d>
+            <b-c-c -copy from=/entity noclear noshadow></b-c-c>
+          </summary>
+        </details>
+  </template>
+  <b-c-c copy from=/object noshadow></b-c-c>
     <!-- Use experimental import maps -->
     <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
     <script type="importmap-shim">
