@@ -73,7 +73,7 @@ const mainTemplate = createTemplate(/* html */ `
             <div -data-type data-type=unknown>
                 <input data-var="key"><input disabled=2 data-var=value>
             </div>
-            <if-diff if -lhs equals rhs="object" data-key-name=isObject></if-diff>
+            <if-diff-then-stiff if -lhs equals rhs="object" data-key-name=isObject m=1></if-diff-then-stiff>
             <div data-is-object=0>
                 <template>
                     <xtal-json-object></xtal-json-object>

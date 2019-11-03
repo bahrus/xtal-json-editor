@@ -6,7 +6,7 @@ export const mainTemplate = createTemplate(/* html */`
   <b-c-c copy from=object noshadow></b-c-c>
 `);
 import('carbon-copy/b-c-c.js');
-import('if-diff/if-diff.js');
+import('if-diff/if-diff-then-stiff.js');
 export class XtalJsonObject extends XtalElement{
     static get is(){return 'xtal-json-object';}
     _obj: object;
