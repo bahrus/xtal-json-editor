@@ -53,9 +53,19 @@ const mainTemplate = createTemplate(/* html */ `
       [data-type="unknown"]>input[data-var="key"] {
         background-color: rgb(223, 181, 210);
       }
+
+      details>summary::-webkit-details-marker{
+       display:none;
+      }
+
+      details>summary {
+        margin-top: 20px;
+        list-style: none;
+        cursor:pointer;
+      }
     </style>
     <template id=object>
-        <details>
+        <details open>
             <summary>+</summary>
             <button data-copy=true>Add New Value</button>
             <p-d on="click" to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
