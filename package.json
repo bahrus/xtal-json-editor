@@ -12,7 +12,7 @@
     "trans-render": "0.0.136",
     "p-et-alia": "0.0.53",
     "if-diff": "0.0.36",
-    "carbon-copy": "0.1.46"
+    "carbon-copy": "0.1.47"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.3.0",

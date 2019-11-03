@@ -5,7 +5,7 @@ const keySymbol = Symbol();
 import("./xtal-json-object.js");
 import('p-et-alia/p-d-x.js').then(module => {
     module.extend({
-        name: "get-val-type",
+        name: "xtal-json-editor-get-val-type",
         valFromEvent: (e) => {
             const txt = e.target;
             const val = txt.value.trim();
@@ -83,22 +83,15 @@ const mainTemplate = createTemplate(/* html */ `
       }
 
     </style>
-    <template id=object>
-        <details open>
-            <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
-            <summary>+ {}</summary>
-            <b-c-c -copy from=entity noclear noshadow></b-c-c>
-            <button disabled data-copy=true>Add New Value</button>
-        </details>
-    </template>
+
     <template id=entity>
         <section>
-            <p-d-x-get-val-type  
+            <p-d-x-xtal-json-editor-get-val-type  
                 on=input if="[data-var='value']" to=[-data-type] set-attr m=1
-            ></p-d-x-get-val-type>
-            <p-d-x-get-val-type  
+            ></p-d-x-xtal-json-editor-get-val-type>
+            <p-d-x-xtal-json-editor-get-val-type  
                 on=input if="[data-var='value']" to=[-lhs] val=target.dataset.type m=1
-            ></p-d-x-get-val-type>
+            ></p-d-x-xtal-json-editor-get-val-type>
             <p-d-x-self-destruct-if-cleared on=input if="[data-var='key']"></p-d-x-self-destruct-if-cleared>
             <div -data-type data-type=unknown>
                 <input data-var="key" disabled><input disabled=2 data-var=value>
