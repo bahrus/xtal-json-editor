@@ -2,6 +2,7 @@ import { XtalElement } from "xtal-element/xtal-element.js";
 import { createTemplate } from "xtal-element/utils.js";
 import {define} from 'trans-render/define.js';
 
+const keySymbol = Symbol();
 import("./xtal-json-object.js");
 import('p-et-alia/p-d-x.js').then(module => {
     module.extend({
@@ -26,7 +27,17 @@ import('p-et-alia/p-d-x.js').then(module => {
           }
         }
     });
-
+    module.extend({
+        name: "self-destruct-if-cleared",
+        valFromEvent: (e: Event) =>{
+            const txt = e.target as HTMLInputElement;
+            const prevValue = (<any>txt)[keySymbol];
+            if(txt.value.length === 0 && prevValue !== undefined && prevValue.length > 0){
+                txt.closest('section').remove();
+            }
+            (<any>txt)[keySymbol] = txt.value;
+        }
+    })
 });
 
 const mainTemplate = createTemplate(/* html */ `
@@ -72,7 +83,7 @@ const mainTemplate = createTemplate(/* html */ `
     <template id=object>
         <details open>
             <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
-            <summary>+</summary>
+            <summary>+ {}</summary>
             <b-c-c -copy from=entity noclear noshadow></b-c-c>
             <button disabled data-copy=true>Add New Value</button>
         </details>
@@ -85,8 +96,9 @@ const mainTemplate = createTemplate(/* html */ `
             <p-d-x-get-val-type  
                 on=input if="[data-var='value']" to=[-lhs] val=target.dataset.type m=1
             ></p-d-x-get-val-type>
+            <p-d-x-self-destruct-if-cleared on=input if="[data-var='key']"></p-d-x-self-destruct-if-cleared>
             <div -data-type data-type=unknown>
-                <input data-var="key"><input disabled=2 data-var=value>
+                <input data-var="key" disabled><input disabled=2 data-var=value>
             </div>
             <if-diff-then-stiff if -lhs equals rhs="object" data-key-name=isObject m=1></if-diff-then-stiff>
             <div data-is-object=0>
