@@ -26,6 +26,7 @@ import('p-et-alia/p-d-x.js').then(module => {
           }
         }
     });
+
 });
 
 const mainTemplate = createTemplate(/* html */ `
@@ -51,6 +52,9 @@ const mainTemplate = createTemplate(/* html */ `
         background-color: rgb(223, 181, 210);
       }
 
+      input[data-var="value"]{
+          background-color: #ECF3C3;
+      }
       details>summary::-webkit-details-marker{
        display:none;
       }
@@ -60,13 +64,17 @@ const mainTemplate = createTemplate(/* html */ `
         list-style: none;
         cursor:pointer;
       }
+      section {
+          margin-left: 15px;
+      }
+
     </style>
     <template id=object>
         <details open>
+            <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
             <summary>+</summary>
-            <button data-copy=true>Add New Value</button>
-            <p-d on="click" to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
             <b-c-c -copy from=entity noclear noshadow></b-c-c>
+            <button disabled data-copy=true>Add New Value</button>
         </details>
     </template>
     <template id=entity>
