@@ -1,6 +1,7 @@
 import { XtalElement } from "xtal-element/xtal-element.js";
 import { createTemplate } from "xtal-element/utils.js";
 import {define} from 'trans-render/define.js';
+import {XtalJsonObject} from './xtal-json-object.js';
 
 const keySymbol = Symbol();
 import("./xtal-json-object.js");
@@ -103,24 +104,21 @@ const mainTemplate = createTemplate(/* html */ `
             <if-diff-then-stiff if -lhs equals rhs="object" data-key-name=isObject m=1></if-diff-then-stiff>
             <div data-is-object=0>
                 <template>
-                    <xtal-json-object></xtal-json-object>
+                    <xtal-json-object obj={}></xtal-json-object>
                 </template>
             </div>
         </section>      
     </template>
-    <xtal-json-object></xtal-json-object>
+    <xtal-json-object obj={}></xtal-json-object>
 `);
 
 
-export class XtalJsonEditor extends XtalElement {
+export class XtalJsonEditor extends  XtalJsonObject{
   static get is() {
     return "xtal-json-editor";
   }
   get mainTemplate() {
     return mainTemplate;
-  }
-  get readyToInit() {
-    return true;
   }
 }
 define(XtalJsonEditor);
