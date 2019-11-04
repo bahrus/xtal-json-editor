@@ -1,6 +1,7 @@
-import { createTemplate } from 'xtal-element/utils.js';
+import { createTemplate, newRenderContext } from 'xtal-element/utils.js';
 import { XtalElement } from 'xtal-element/xtal-element.js';
 import { define } from 'trans-render/define.js';
+import { decorate } from 'trans-render/decorate.js';
 export const mainTemplate = createTemplate(/* html */ `
 <details open>
     <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
@@ -17,11 +18,30 @@ export class XtalJsonObject extends XtalElement {
     static get observedAttributes() {
         return super.observedAttributes.concat([obj]);
     }
-    get addNewButton() {
-        if (this._addNewButton === undefined) {
-            this._addNewButton = this.querySelector('[data-copy]');
-        }
-        return this._addNewButton;
+    get initRenderContext() {
+        return newRenderContext({
+            details: {
+                button: ({ target }) => {
+                    this.addNewButton = target;
+                    decorate(target, {
+                        propDefs: {
+                            counter: 0
+                        },
+                        on: {
+                            click: function (e) {
+                                this.counter++;
+                            }
+                        },
+                        methods: {
+                            onPropsChange() {
+                                console.log('iah2');
+                                this.setAttribute('data-counter', this.counter);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
     addNewValue() {
         this.addNewButton.click();

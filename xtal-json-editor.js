@@ -94,7 +94,7 @@ const mainTemplate = createTemplate(/* html */ `
             ></p-d-x-xtal-json-editor-get-val-type>
             <p-d-x-self-destruct-if-cleared on=input if="[data-var='key']"></p-d-x-self-destruct-if-cleared>
             <div -data-type data-type=unknown>
-                <input data-var="key" disabled><input disabled=2 data-var=value>
+                <input data-var="key" disabled value=key><input disabled=2 data-var=value>
             </div>
             <if-diff-then-stiff if -lhs equals rhs="object" data-key-name=isObject m=1></if-diff-then-stiff>
             <div data-is-object=0>

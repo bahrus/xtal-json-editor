@@ -1,6 +1,7 @@
-import {createTemplate} from 'xtal-element/utils.js';
+import {createTemplate, newRenderContext} from 'xtal-element/utils.js';
 import {XtalElement} from 'xtal-element/xtal-element.js';
 import {define} from 'trans-render/define.js';
+import {decorate} from 'trans-render/decorate.js';
 
 export const mainTemplate = createTemplate(/* html */`
 <details open>
@@ -18,13 +19,34 @@ export class XtalJsonObject extends XtalElement{
     static get observedAttributes(){
         return super.observedAttributes.concat([obj]);
     }
-    _addNewButton: HTMLButtonElement | undefined;
-    get addNewButton(){
-        if(this._addNewButton === undefined){
-            this._addNewButton = this.querySelector('[data-copy]') as HTMLButtonElement;
-        }
-        return this._addNewButton;
+
+    get initRenderContext() {
+        return newRenderContext({
+            details:{
+                button: ({target}) =>{
+                    this.addNewButton = target as HTMLButtonElement;
+                    decorate(target, {
+                        propDefs:{
+                            counter: 0
+                        },
+                        on:{
+                            click: function(e){
+                                this.counter++;
+                            }
+                        },
+                        methods:{
+                            onPropsChange(){
+                                console.log('iah2');
+                                this.setAttribute('data-counter', this.counter);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
+    addNewButton!: HTMLButtonElement;
+
     addNewValue(){
         this.addNewButton.click();
     }
