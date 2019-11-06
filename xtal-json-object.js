@@ -77,6 +77,10 @@ export class XtalJsonObject extends XtalElement {
         });
     }
     addNewValue() {
+        if (this.addNewButton === undefined) {
+            console.log('why?');
+            return;
+        }
         this.addNewButton.click();
     }
     attributeChangedCallback(n, ov, nv) {
@@ -93,16 +97,20 @@ export class XtalJsonObject extends XtalElement {
     set obj(nv) {
         this._obj = nv;
         this.onPropsChange();
-        setTimeout(() => {
-            for (var key in nv) {
+    }
+    afterInitRenderCallback() {
+        customElements.whenDefined('b-c-c').then(() => {
+            if (this._obj === undefined)
+                return;
+            for (var key in this._obj) {
                 this._nameValPair = {
                     name: key,
-                    val: nv[key]
+                    val: this._obj[key]
                 };
                 this.addNewValue();
             }
             delete this._nameValPair;
-        }, 1000); //TODO, remove set timeout
+        });
     }
     get mainTemplate() {
         return mainTemplate;

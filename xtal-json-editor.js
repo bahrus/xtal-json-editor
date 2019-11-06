@@ -1,9 +1,10 @@
+import { XtalElement } from "xtal-element/xtal-element.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
-import { define } from 'trans-render/define.js';
-import { XtalJsonObject } from './xtal-json-object.js';
+import { define } from "trans-render/define.js";
+import { XtalJsonObject } from "./xtal-json-object.js";
 const keySymbol = Symbol();
 import("./xtal-json-object.js");
-import('p-et-alia/p-d-x.js').then(module => {
+import("p-et-alia/p-d-x.js").then(module => {
     module.extend({
         name: "xtal-json-editor-get-val-type",
         valFromEvent: (e) => {
@@ -36,8 +37,10 @@ import('p-et-alia/p-d-x.js').then(module => {
         valFromEvent: (e) => {
             const txt = e.target;
             const prevValue = txt[keySymbol];
-            if (txt.value.length === 0 && prevValue !== undefined && prevValue.length > 0) {
-                txt.closest('section').remove();
+            if (txt.value.length === 0 &&
+                prevValue !== undefined &&
+                prevValue.length > 0) {
+                txt.closest("section").remove();
             }
             txt[keySymbol] = txt.value;
         }
@@ -106,9 +109,13 @@ const mainTemplate = createTemplate(/* html */ `
     </template>
     <xtal-json-object></xtal-json-object>
 `);
-export class XtalJsonEditor extends XtalJsonObject {
+const obj = 'obj';
+export class XtalJsonEditor extends XtalElement {
     static get is() {
         return "xtal-json-editor";
+    }
+    static get observedAttributes() {
+        return super.observedAttributes.concat([obj]);
     }
     get mainTemplate() {
         return mainTemplate;
@@ -119,6 +126,24 @@ export class XtalJsonEditor extends XtalJsonObject {
                 target.obj = this.obj;
             }
         });
+    }
+    attributeChangedCallback(n, ov, nv) {
+        switch (n) {
+            case obj:
+                this._obj = JSON.parse(nv);
+                break;
+        }
+        super.attributeChangedCallback(n, ov, nv);
+    }
+    get obj() {
+        return this._obj;
+    }
+    set obj(nv) {
+        this._obj = nv;
+        this.onPropsChange();
+    }
+    get readyToInit() {
+        return this._obj !== undefined;
     }
 }
 define(XtalJsonEditor);

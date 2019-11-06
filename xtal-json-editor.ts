@@ -1,44 +1,48 @@
 import { XtalElement } from "xtal-element/xtal-element.js";
 import { createTemplate, newRenderContext } from "xtal-element/utils.js";
-import {define} from 'trans-render/define.js';
-import {XtalJsonObject} from './xtal-json-object.js';
+import { define } from "trans-render/define.js";
+import { XtalJsonObject } from "./xtal-json-object.js";
 
 const keySymbol = Symbol();
 import("./xtal-json-object.js");
-import('p-et-alia/p-d-x.js').then(module => {
-    module.extend({
-        name: "xtal-json-editor-get-val-type",
-        valFromEvent: (e: Event) => {
-          const txt = e.target as HTMLInputElement;
-          const val = (txt.value as string).trim();
-          const val0 = val[0];
-          const valC = val[val.length - 1];
-          if (val0 === '"' && valC === '"') {
-            return "string";
-          } else if (val0 === "{" && valC === "}") {
-            return "object";
-          } else if (val0 === "[" && valC === "]") {
-            return "array";
-          } else if (!isNaN((val as any) as number)) {
-            return "number";
-          } else if (val === "true" || val === "false") {
-            return "boolean";
-          } else {
-            return "unknown";
-          }
-        }
-    });
-    module.extend({
-        name: "self-destruct-if-cleared",
-        valFromEvent: (e: Event) =>{
-            const txt = e.target as HTMLInputElement;
-            const prevValue = (<any>txt)[keySymbol];
-            if(txt.value.length === 0 && prevValue !== undefined && prevValue.length > 0){
-                txt.closest('section').remove();
-            }
-            (<any>txt)[keySymbol] = txt.value;
-        }
-    })
+import("p-et-alia/p-d-x.js").then(module => {
+  module.extend({
+    name: "xtal-json-editor-get-val-type",
+    valFromEvent: (e: Event) => {
+      const txt = e.target as HTMLInputElement;
+      const val = (txt.value as string).trim();
+      const val0 = val[0];
+      const valC = val[val.length - 1];
+      if (val0 === '"' && valC === '"') {
+        return "string";
+      } else if (val0 === "{" && valC === "}") {
+        return "object";
+      } else if (val0 === "[" && valC === "]") {
+        return "array";
+      } else if (!isNaN((val as any) as number)) {
+        return "number";
+      } else if (val === "true" || val === "false") {
+        return "boolean";
+      } else {
+        return "unknown";
+      }
+    }
+  });
+  module.extend({
+    name: "self-destruct-if-cleared",
+    valFromEvent: (e: Event) => {
+      const txt = e.target as HTMLInputElement;
+      const prevValue = (<any>txt)[keySymbol];
+      if (
+        txt.value.length === 0 &&
+        prevValue !== undefined &&
+        prevValue.length > 0
+      ) {
+        txt.closest("section").remove();
+      }
+      (<any>txt)[keySymbol] = txt.value;
+    }
+  });
 });
 
 const mainTemplate = createTemplate(/* html */ `
@@ -104,21 +108,44 @@ const mainTemplate = createTemplate(/* html */ `
     </template>
     <xtal-json-object></xtal-json-object>
 `);
-
-
-export class XtalJsonEditor extends  XtalJsonObject{
+const obj = 'obj';
+export class XtalJsonEditor extends XtalElement {
   static get is() {
     return "xtal-json-editor";
   }
+  static get observedAttributes(){
+    return super.observedAttributes.concat([obj]);
+}
   get mainTemplate() {
     return mainTemplate;
   }
   get initRenderContext() {
     return newRenderContext({
-      [XtalJsonObject.is]:({target}) => {
+      [XtalJsonObject.is]: ({ target }) => {
         (target as XtalJsonObject).obj = this.obj;
       }
     });
   }
+
+  attributeChangedCallback(n: string, ov: string, nv: string) {
+    switch (n) {
+      case obj:
+        this._obj = JSON.parse(nv);
+        break;
+    }
+    super.attributeChangedCallback(n, ov, nv);
+  }
+  _obj: object | undefined;
+  get obj() {
+    return this._obj;
+  }
+  set obj(nv) {
+    this._obj = nv;
+    this.onPropsChange();
+  }
+
+  get readyToInit(){
+    return this._obj !== undefined;
+}
 }
 define(XtalJsonEditor);
