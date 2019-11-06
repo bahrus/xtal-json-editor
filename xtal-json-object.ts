@@ -4,7 +4,7 @@ import {define} from 'trans-render/define.js';
 import {decorate} from 'trans-render/decorate.js';
 import {BCC_WC} from 'carbon-copy/typings.js';
 import {init} from 'trans-render/init.js';
-
+import 'carbon-copy/b-c-c.js';
 export const mainTemplate = createTemplate(/* html */`
 <details open>
     <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
@@ -13,7 +13,7 @@ export const mainTemplate = createTemplate(/* html */`
     <button disabled  data-copy=true>Add New Value</button>
 </details>
 `);
-import('carbon-copy/b-c-c.js');
+//import('carbon-copy/b-c-c.js');
 import('if-diff/if-diff-then-stiff.js');
 const obj = 'obj';
 interface NameValPair{
@@ -89,10 +89,10 @@ export class XtalJsonObject extends XtalElement{
     addNewButton!: HTMLButtonElement;
 
     addNewValue(){
-        if(this.addNewButton === undefined){
-            console.log('why?');
-            return;
-        }
+        // if(this.addNewButton === undefined){
+        //     console.log('why?');
+        //     return;
+        // }
         this.addNewButton.click();
     }
     attributeChangedCallback(n: string, ov: string, nv: string){
@@ -114,7 +114,7 @@ export class XtalJsonObject extends XtalElement{
 
     }
     afterInitRenderCallback(){
-        customElements.whenDefined('b-c-c').then(() =>{ //TODO -- clean this up somehow
+        //customElements.whenDefined('b-c-c').then(() =>{ //TODO -- clean this up somehow
             if(this._obj === undefined) return;
             for(var key in this._obj){
                 this._nameValPair = {
@@ -124,7 +124,7 @@ export class XtalJsonObject extends XtalElement{
                 this.addNewValue();
             }
             delete this._nameValPair;
-        })
+        //})
 
     }
     get mainTemplate(){

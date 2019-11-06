@@ -2,6 +2,7 @@ import { createTemplate, newRenderContext } from 'xtal-element/utils.js';
 import { XtalElement } from 'xtal-element/xtal-element.js';
 import { define } from 'trans-render/define.js';
 import { init } from 'trans-render/init.js';
+import 'carbon-copy/b-c-c.js';
 export const mainTemplate = createTemplate(/* html */ `
 <details open>
     <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
@@ -10,7 +11,7 @@ export const mainTemplate = createTemplate(/* html */ `
     <button disabled  data-copy=true>Add New Value</button>
 </details>
 `);
-import('carbon-copy/b-c-c.js');
+//import('carbon-copy/b-c-c.js');
 import('if-diff/if-diff-then-stiff.js');
 const obj = 'obj';
 export class XtalJsonObject extends XtalElement {
@@ -77,10 +78,10 @@ export class XtalJsonObject extends XtalElement {
         });
     }
     addNewValue() {
-        if (this.addNewButton === undefined) {
-            console.log('why?');
-            return;
-        }
+        // if(this.addNewButton === undefined){
+        //     console.log('why?');
+        //     return;
+        // }
         this.addNewButton.click();
     }
     attributeChangedCallback(n, ov, nv) {
@@ -99,18 +100,18 @@ export class XtalJsonObject extends XtalElement {
         this.onPropsChange();
     }
     afterInitRenderCallback() {
-        customElements.whenDefined('b-c-c').then(() => {
-            if (this._obj === undefined)
-                return;
-            for (var key in this._obj) {
-                this._nameValPair = {
-                    name: key,
-                    val: this._obj[key]
-                };
-                this.addNewValue();
-            }
-            delete this._nameValPair;
-        });
+        //customElements.whenDefined('b-c-c').then(() =>{ //TODO -- clean this up somehow
+        if (this._obj === undefined)
+            return;
+        for (var key in this._obj) {
+            this._nameValPair = {
+                name: key,
+                val: this._obj[key]
+            };
+            this.addNewValue();
+        }
+        delete this._nameValPair;
+        //})
     }
     get mainTemplate() {
         return mainTemplate;
