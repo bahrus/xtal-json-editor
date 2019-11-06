@@ -36,32 +36,32 @@ export class XtalJsonObject extends XtalElement{
                         Transform: {
                             section:{
                                 'div[data-type]':{
-                                    'input[data-var="key"]': ({target}) => (<any>target).value = 'key' + XtalJsonObject.counter;
+                                    'input[data-var="key"]': ({target}) => (<any>target).value = 'key' + XtalJsonObject.counter,
                                 }
 
                             }
                         }
                     }
                 },
-                button: ({target}) =>{
-                    this.addNewButton = target as HTMLButtonElement;
-                    decorate(target, {
-                        propDefs:{
-                            counter: 0
-                        },
-                        on:{
-                            click: function(e){
-                                this.counter++;
-                            }
-                        },
-                        methods:{
-                            onPropsChange(){
-                                console.log('iah2');
-                                this.setAttribute('data-counter', this.counter);
-                            }
-                        }
-                    });
-                }
+                // button: ({target}) =>{
+                //     this.addNewButton = target as HTMLButtonElement;
+                //     decorate(target, {
+                //         propDefs:{
+                //             counter: 0
+                //         },
+                //         on:{
+                //             click: function(e){
+                //                 this.counter++;
+                //             }
+                //         },
+                //         methods:{
+                //             onPropsChange(){
+                //                 console.log('iah2');
+                //                 this.setAttribute('data-counter', this.counter);
+                //             }
+                //         }
+                //     });
+                // }
             }
         });
     }

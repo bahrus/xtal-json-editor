@@ -1,7 +1,6 @@
 import { createTemplate, newRenderContext } from 'xtal-element/utils.js';
 import { XtalElement } from 'xtal-element/xtal-element.js';
 import { define } from 'trans-render/define.js';
-import { decorate } from 'trans-render/decorate.js';
 import { init } from 'trans-render/init.js';
 export const mainTemplate = createTemplate(/* html */ `
 <details open>
@@ -33,31 +32,12 @@ export class XtalJsonObject extends XtalElement {
                         Transform: {
                             section: {
                                 'div[data-type]': {
-                                    'input[data-var="key"]': ({ target }) => target.value = 'key' + XtalJsonObject.counter
+                                    'input[data-var="key"]': ({ target }) => target.value = 'key' + XtalJsonObject.counter,
                                 }
                             }
                         }
                     };
                 },
-                button: ({ target }) => {
-                    this.addNewButton = target;
-                    decorate(target, {
-                        propDefs: {
-                            counter: 0
-                        },
-                        on: {
-                            click: function (e) {
-                                this.counter++;
-                            }
-                        },
-                        methods: {
-                            onPropsChange() {
-                                console.log('iah2');
-                                this.setAttribute('data-counter', this.counter);
-                            }
-                        }
-                    });
-                }
             }
         });
     }

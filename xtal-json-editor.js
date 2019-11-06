@@ -1,4 +1,4 @@
-import { createTemplate } from "xtal-element/utils.js";
+import { createTemplate, newRenderContext } from "xtal-element/utils.js";
 import { define } from 'trans-render/define.js';
 import { XtalJsonObject } from './xtal-json-object.js';
 const keySymbol = Symbol();
@@ -104,7 +104,7 @@ const mainTemplate = createTemplate(/* html */ `
             </div>
         </section>      
     </template>
-    <xtal-json-object obj={}></xtal-json-object>
+    <xtal-json-object></xtal-json-object>
 `);
 export class XtalJsonEditor extends XtalJsonObject {
     static get is() {
@@ -112,6 +112,13 @@ export class XtalJsonEditor extends XtalJsonObject {
     }
     get mainTemplate() {
         return mainTemplate;
+    }
+    get initRenderContext() {
+        return newRenderContext({
+            [XtalJsonObject.is]: ({ target }) => {
+                target.obj = this.obj;
+            }
+        });
     }
 }
 define(XtalJsonEditor);
