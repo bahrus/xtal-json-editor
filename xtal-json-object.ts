@@ -16,6 +16,10 @@ export const mainTemplate = createTemplate(/* html */`
 import('carbon-copy/b-c-c.js');
 import('if-diff/if-diff-then-stiff.js');
 const obj = 'obj';
+interface NameValPair{
+    name: string;
+    val: any;
+}
 export class XtalJsonObject extends XtalElement{
     static get is(){return 'xtal-json-object';}
     static get observedAttributes(){
@@ -26,6 +30,7 @@ export class XtalJsonObject extends XtalElement{
         this._counter++;
         return this._counter;
     }
+    _nameValPair: NameValPair;
     get initRenderContext() {
         return newRenderContext({
             details:{
@@ -36,32 +41,40 @@ export class XtalJsonObject extends XtalElement{
                         Transform: {
                             section:{
                                 'div[data-type]':{
-                                    'input[data-var="key"]': ({target}) => (<any>target).value = 'key' + XtalJsonObject.counter,
+                                    'input[data-var="key"]': ({target}) => {
+                                        const txt = target as any as HTMLInputElement;
+                                        if(this._nameValPair){
+                                            txt.value = this._nameValPair.name;
+                                        }else{
+                                            txt.value = 'key' + XtalJsonObject.counter
+                                        }
+                                        
+                                    },
                                 }
 
                             }
                         }
                     }
                 },
-                // button: ({target}) =>{
-                //     this.addNewButton = target as HTMLButtonElement;
-                //     decorate(target, {
-                //         propDefs:{
-                //             counter: 0
-                //         },
-                //         on:{
-                //             click: function(e){
-                //                 this.counter++;
-                //             }
-                //         },
-                //         methods:{
-                //             onPropsChange(){
-                //                 console.log('iah2');
-                //                 this.setAttribute('data-counter', this.counter);
-                //             }
-                //         }
-                //     });
-                // }
+                button: ({target}) =>{
+                    this.addNewButton = target as HTMLButtonElement;
+                    // decorate(target, {
+                    //     propDefs:{
+                    //         counter: 0
+                    //     },
+                    //     on:{
+                    //         click: function(e){
+                    //             this.counter++;
+                    //         }
+                    //     },
+                    //     methods:{
+                    //         onPropsChange(){
+                    //             console.log('iah2');
+                    //             this.setAttribute('data-counter', this.counter);
+                    //         }
+                    //     }
+                    // });
+                }
             }
         });
     }
@@ -85,6 +98,17 @@ export class XtalJsonObject extends XtalElement{
     set obj(nv){
         this._obj = nv;
         this.onPropsChange();
+        setTimeout(() =>{
+            for(var key in nv){
+                this._nameValPair = {
+                    name: key,
+                    val: nv[key]
+                }
+                this.addNewValue();
+            }
+            delete this._nameValPair;
+        }, 1000);//TODO, remove set timeout
+
     }
     get mainTemplate(){
         return mainTemplate;

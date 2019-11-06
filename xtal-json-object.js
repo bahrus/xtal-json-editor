@@ -32,12 +32,39 @@ export class XtalJsonObject extends XtalElement {
                         Transform: {
                             section: {
                                 'div[data-type]': {
-                                    'input[data-var="key"]': ({ target }) => target.value = 'key' + XtalJsonObject.counter,
+                                    'input[data-var="key"]': ({ target }) => {
+                                        const txt = target;
+                                        if (this._nameValPair) {
+                                            txt.value = this._nameValPair.name;
+                                        }
+                                        else {
+                                            txt.value = 'key' + XtalJsonObject.counter;
+                                        }
+                                    },
                                 }
                             }
                         }
                     };
                 },
+                button: ({ target }) => {
+                    this.addNewButton = target;
+                    // decorate(target, {
+                    //     propDefs:{
+                    //         counter: 0
+                    //     },
+                    //     on:{
+                    //         click: function(e){
+                    //             this.counter++;
+                    //         }
+                    //     },
+                    //     methods:{
+                    //         onPropsChange(){
+                    //             console.log('iah2');
+                    //             this.setAttribute('data-counter', this.counter);
+                    //         }
+                    //     }
+                    // });
+                }
             }
         });
     }
@@ -58,6 +85,16 @@ export class XtalJsonObject extends XtalElement {
     set obj(nv) {
         this._obj = nv;
         this.onPropsChange();
+        setTimeout(() => {
+            for (var key in nv) {
+                this._nameValPair = {
+                    name: key,
+                    val: nv[key]
+                };
+                this.addNewValue();
+            }
+            delete this._nameValPair;
+        }, 1000); //TODO, remove set timeout
     }
     get mainTemplate() {
         return mainTemplate;
