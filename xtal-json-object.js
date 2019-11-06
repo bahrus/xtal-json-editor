@@ -41,6 +41,14 @@ export class XtalJsonObject extends XtalElement {
                                             txt.value = 'key' + XtalJsonObject.counter;
                                         }
                                     },
+                                    'input[data-var="value"]': ({ target }) => {
+                                        const txt = target;
+                                        if (this._nameValPair) {
+                                            txt.value = this._nameValPair.val;
+                                        }
+                                        else {
+                                        }
+                                    }
                                 }
                             }
                         }

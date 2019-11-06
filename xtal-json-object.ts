@@ -50,6 +50,14 @@ export class XtalJsonObject extends XtalElement{
                                         }
                                         
                                     },
+                                    'input[data-var="value"]': ({target}) =>{
+                                        const txt = target as any as HTMLInputElement;
+                                        if(this._nameValPair){
+                                            txt.value = this._nameValPair.val;
+                                        }else{
+                                            
+                                        }
+                                    }
                                 }
 
                             }
