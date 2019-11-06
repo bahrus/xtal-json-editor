@@ -2,6 +2,8 @@ import {createTemplate, newRenderContext} from 'xtal-element/utils.js';
 import {XtalElement} from 'xtal-element/xtal-element.js';
 import {define} from 'trans-render/define.js';
 import {decorate} from 'trans-render/decorate.js';
+import {BCC_WC} from 'carbon-copy/typings.js';
+import {init} from 'trans-render/init.js';
 
 export const mainTemplate = createTemplate(/* html */`
 <details open>
@@ -19,10 +21,28 @@ export class XtalJsonObject extends XtalElement{
     static get observedAttributes(){
         return super.observedAttributes.concat([obj]);
     }
-
+    static _counter = 0;
+    static get counter(){
+        this._counter++;
+        return this._counter;
+    }
     get initRenderContext() {
         return newRenderContext({
             details:{
+                'b-c-c': ({target}) =>{
+                    const bcc = (<any>target) as BCC_WC;
+                    bcc.renderContext = {
+                        init: init,
+                        Transform: {
+                            section:{
+                                'div[data-type]':{
+                                    'input[data-var="key"]': ({target}) => (<any>target).value = 'key' + XtalJsonObject.counter;
+                                }
+
+                            }
+                        }
+                    }
+                },
                 button: ({target}) =>{
                     this.addNewButton = target as HTMLButtonElement;
                     decorate(target, {

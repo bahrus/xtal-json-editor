@@ -2,6 +2,7 @@ import { createTemplate, newRenderContext } from 'xtal-element/utils.js';
 import { XtalElement } from 'xtal-element/xtal-element.js';
 import { define } from 'trans-render/define.js';
 import { decorate } from 'trans-render/decorate.js';
+import { init } from 'trans-render/init.js';
 export const mainTemplate = createTemplate(/* html */ `
 <details open>
     <p-d on="click" if=[data-copy] to=[-copy] val=target.dataset.copy skip-init m=1></p-d>
@@ -18,9 +19,26 @@ export class XtalJsonObject extends XtalElement {
     static get observedAttributes() {
         return super.observedAttributes.concat([obj]);
     }
+    static get counter() {
+        this._counter++;
+        return this._counter;
+    }
     get initRenderContext() {
         return newRenderContext({
             details: {
+                'b-c-c': ({ target }) => {
+                    const bcc = target;
+                    bcc.renderContext = {
+                        init: init,
+                        Transform: {
+                            section: {
+                                'div[data-type]': {
+                                    'input[data-var="key"]': ({ target }) => target.value = 'key' + XtalJsonObject.counter
+                                }
+                            }
+                        }
+                    };
+                },
                 button: ({ target }) => {
                     this.addNewButton = target;
                     decorate(target, {
@@ -80,4 +98,5 @@ export class XtalJsonObject extends XtalElement {
         return true;
     }
 }
+XtalJsonObject._counter = 0;
 define(XtalJsonObject);
