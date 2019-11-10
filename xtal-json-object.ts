@@ -66,22 +66,6 @@ export class XtalJsonObject extends XtalElement{
                 },
                 button: ({target}) =>{
                     this.addNewButton = target as HTMLButtonElement;
-                    // decorate(target, {
-                    //     propDefs:{
-                    //         counter: 0
-                    //     },
-                    //     on:{
-                    //         click: function(e){
-                    //             this.counter++;
-                    //         }
-                    //     },
-                    //     methods:{
-                    //         onPropsChange(){
-                    //             console.log('iah2');
-                    //             this.setAttribute('data-counter', this.counter);
-                    //         }
-                    //     }
-                    // });
                 }
             }
         });
@@ -89,10 +73,6 @@ export class XtalJsonObject extends XtalElement{
     addNewButton!: HTMLButtonElement;
 
     addNewValue(){
-        // if(this.addNewButton === undefined){
-        //     console.log('why?');
-        //     return;
-        // }
         this.addNewButton.click();
     }
     attributeChangedCallback(n: string, ov: string, nv: string){
@@ -114,17 +94,15 @@ export class XtalJsonObject extends XtalElement{
 
     }
     afterInitRenderCallback(){
-        //customElements.whenDefined('b-c-c').then(() =>{ //TODO -- clean this up somehow
-            if(this._obj === undefined) return;
-            for(var key in this._obj){
-                this._nameValPair = {
-                    name: key,
-                    val: this._obj[key]
-                }
-                this.addNewValue();
+        if(this._obj === undefined) return;
+        for(var key in this._obj){
+            this._nameValPair = {
+                name: key,
+                val: this._obj[key]
             }
-            delete this._nameValPair;
-        //})
+            this.addNewValue();
+        }
+        delete this._nameValPair;
 
     }
     get mainTemplate(){
