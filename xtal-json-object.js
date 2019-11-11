@@ -2,6 +2,7 @@ import { createTemplate, newRenderContext } from 'xtal-element/utils.js';
 import { XtalElement } from 'xtal-element/xtal-element.js';
 import { define } from 'trans-render/define.js';
 import { init } from 'trans-render/init.js';
+import { waitForAttributeChange } from './waitForAttributeChange.js';
 import 'carbon-copy/b-c-c.js';
 export const mainTemplate = createTemplate(/* html */ `
 <details open>
@@ -45,7 +46,23 @@ export class XtalJsonObject extends XtalElement {
                                     'input[data-var="value"]': ({ target }) => {
                                         const txt = target;
                                         if (this._nameValPair) {
-                                            txt.value = this._nameValPair.val;
+                                            const val = this._nameValPair.val;
+                                            switch (typeof (val)) {
+                                                case 'string':
+                                                    txt.value = this._nameValPair.val;
+                                                    break;
+                                                case 'object':
+                                                    txt.value = '{}';
+                                                    waitForAttributeChange(txt, 'disabled', s => s === null).then(() => {
+                                                        txt.dispatchEvent(new CustomEvent('input', {
+                                                            detail: {
+                                                                value: val
+                                                            },
+                                                            bubbles: true
+                                                        }));
+                                                    });
+                                                    break;
+                                            }
                                         }
                                         else {
                                         }
