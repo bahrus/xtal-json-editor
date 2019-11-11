@@ -53,8 +53,12 @@ export class XtalJsonObject extends XtalElement {
                                                     break;
                                                 case 'object':
                                                     txt.value = '{}';
+                                                    txt['_val'] = val;
                                                     waitForAttributeChange(txt, 'disabled', s => s === null).then(() => {
                                                         txt.dispatchEvent(new CustomEvent('input', {
+                                                            bubbles: true,
+                                                        }));
+                                                        txt.dispatchEvent(new CustomEvent('object-val', {
                                                             detail: {
                                                                 value: val
                                                             },

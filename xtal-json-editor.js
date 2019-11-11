@@ -9,6 +9,8 @@ import("p-et-alia/p-d-x.js").then(module => {
         name: "xtal-json-editor-get-val-type",
         valFromEvent: (e) => {
             const txt = e.target;
+            if (!txt)
+                return;
             const val = txt.value.trim();
             const val0 = val[0];
             const valC = val[val.length - 1];
@@ -97,12 +99,15 @@ const mainTemplate = createTemplate(/* html */ `
             ></p-d-x-xtal-json-editor-get-val-type>
             <p-d-x-self-destruct-if-cleared on=input if="[data-var='key']"></p-d-x-self-destruct-if-cleared>
             <div -data-type data-type=unknown>
-                <input data-var="key" disabled value=key><input disabled=2 data-var=value>
+                <input data-var="key" disabled value=key>
+                <input disabled=3 data-var=value>
+                <p-d on=object-val noblock from=div to=[-obj] val=detail.value m=1></p-d>
             </div>
+            
             <if-diff-then-stiff if -lhs equals rhs="object" data-key-name=isObject m=2></if-diff-then-stiff>
             <div data-is-object=0>
                 <template>
-                    <xtal-json-object obj={}></xtal-json-object>
+                    <xtal-json-object -obj></xtal-json-object>
                 </template>
             </div>
         </section>      
