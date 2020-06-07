@@ -15,121 +15,125 @@ export const mainTemplate = createTemplate(/* html */ `
 //import('carbon-copy/b-c-c.js');
 import('if-diff/if-diff-then-stiff.js');
 const obj = 'obj';
-export class XtalJsonObject extends XtalElement {
-    static get is() { return 'xtal-json-object'; }
-    static get observedAttributes() {
-        return super.observedAttributes.concat([obj]);
-    }
-    static get counter() {
-        this._counter++;
-        return this._counter;
-    }
-    get initRenderContext() {
-        return newRenderContext({
-            details: {
-                'b-c-c': ({ target }) => {
-                    const bcc = target;
-                    bcc.renderContext = {
-                        init: init,
-                        Transform: {
-                            section: {
-                                'div[data-type]': {
-                                    'input[data-var="key"]': ({ target }) => {
-                                        const txt = target;
-                                        if (this._nameValPair) {
-                                            txt.value = this._nameValPair.name;
-                                        }
-                                        else {
-                                            txt.value = 'key' + XtalJsonObject.counter;
-                                        }
-                                    },
-                                    'input[data-var="value"]': ({ target }) => {
-                                        const txt = target;
-                                        if (this._nameValPair) {
-                                            const val = this._nameValPair.val;
-                                            switch (typeof (val)) {
-                                                case 'string':
-                                                    txt.value = this._nameValPair.val;
-                                                    break;
-                                                case 'object':
-                                                    txt.value = '{}';
-                                                    txt['_val'] = val;
-                                                    waitForAttributeChange(txt, 'disabled', s => s === null).then(() => {
-                                                        txt.dispatchEvent(new CustomEvent('input', {
-                                                            bubbles: true,
-                                                        }));
-                                                        txt.dispatchEvent(new CustomEvent('object-val', {
-                                                            detail: {
-                                                                value: val
-                                                            },
-                                                            bubbles: true
-                                                        }));
-                                                    });
-                                                    break;
+let XtalJsonObject = /** @class */ (() => {
+    class XtalJsonObject extends XtalElement {
+        static get is() { return 'xtal-json-object'; }
+        static get observedAttributes() {
+            return super.observedAttributes.concat([obj]);
+        }
+        static get counter() {
+            this._counter++;
+            return this._counter;
+        }
+        get initRenderContext() {
+            return newRenderContext({
+                details: {
+                    'b-c-c': ({ target }) => {
+                        const bcc = target;
+                        bcc.renderContext = {
+                            init: init,
+                            Transform: {
+                                section: {
+                                    'div[data-type]': {
+                                        'input[data-var="key"]': ({ target }) => {
+                                            const txt = target;
+                                            if (this._nameValPair) {
+                                                txt.value = this._nameValPair.name;
                                             }
-                                        }
-                                        else {
+                                            else {
+                                                txt.value = 'key' + XtalJsonObject.counter;
+                                            }
+                                        },
+                                        'input[data-var="value"]': ({ target }) => {
+                                            const txt = target;
+                                            if (this._nameValPair) {
+                                                const val = this._nameValPair.val;
+                                                switch (typeof (val)) {
+                                                    case 'string':
+                                                        txt.value = this._nameValPair.val;
+                                                        break;
+                                                    case 'object':
+                                                        txt.value = '{}';
+                                                        txt['_val'] = val;
+                                                        waitForAttributeChange(txt, 'disabled', s => s === null).then(() => {
+                                                            txt.dispatchEvent(new CustomEvent('input', {
+                                                                bubbles: true,
+                                                            }));
+                                                            txt.dispatchEvent(new CustomEvent('object-val', {
+                                                                detail: {
+                                                                    value: val
+                                                                },
+                                                                bubbles: true
+                                                            }));
+                                                        });
+                                                        break;
+                                                }
+                                            }
+                                            else {
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    };
-                },
-                button: ({ target }) => {
-                    this.addNewButton = target;
+                        };
+                    },
+                    button: ({ target }) => {
+                        this.addNewButton = target;
+                    }
                 }
+            });
+        }
+        addNewValue() {
+            this.addNewButton.click();
+        }
+        attributeChangedCallback(n, ov, nv) {
+            switch (n) {
+                case obj:
+                    this._obj = JSON.parse(nv);
+                    break;
             }
-        });
-    }
-    addNewValue() {
-        this.addNewButton.click();
-    }
-    attributeChangedCallback(n, ov, nv) {
-        switch (n) {
-            case obj:
-                this._obj = JSON.parse(nv);
-                break;
+            super.attributeChangedCallback(n, ov, nv);
         }
-        super.attributeChangedCallback(n, ov, nv);
-    }
-    get obj() {
-        return this._obj;
-    }
-    set obj(nv) {
-        this._obj = nv;
-        this.onPropsChange();
-    }
-    afterInitRenderCallback() {
-        if (this._obj === undefined)
-            return;
-        for (var key in this._obj) {
-            this._nameValPair = {
-                name: key,
-                val: this._obj[key]
-            };
-            this.addNewValue();
+        get obj() {
+            return this._obj;
         }
-        delete this._nameValPair;
+        set obj(nv) {
+            this._obj = nv;
+            this.onPropsChange();
+        }
+        afterInitRenderCallback() {
+            if (this._obj === undefined)
+                return;
+            for (var key in this._obj) {
+                this._nameValPair = {
+                    name: key,
+                    val: this._obj[key]
+                };
+                this.addNewValue();
+            }
+            delete this._nameValPair;
+        }
+        get mainTemplate() {
+            return mainTemplate;
+        }
+        get readyToInit() {
+            return this._obj !== undefined;
+        }
+        get noShadow() {
+            return true;
+        }
+        connectedCallback() {
+            this.propUp([obj]);
+            super.connectedCallback();
+        }
+        onPropsChange() {
+            if (!super.onPropsChange())
+                return false;
+            return true;
+        }
     }
-    get mainTemplate() {
-        return mainTemplate;
-    }
-    get readyToInit() {
-        return this._obj !== undefined;
-    }
-    get noShadow() {
-        return true;
-    }
-    connectedCallback() {
-        this.propUp([obj]);
-        super.connectedCallback();
-    }
-    onPropsChange() {
-        if (!super.onPropsChange())
-            return false;
-        return true;
-    }
-}
-XtalJsonObject._counter = 0;
+    XtalJsonObject._counter = 0;
+    return XtalJsonObject;
+})();
+export { XtalJsonObject };
 define(XtalJsonObject);
