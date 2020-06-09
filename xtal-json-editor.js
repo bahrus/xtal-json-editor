@@ -72,15 +72,13 @@ let XtalJsonEditor = /** @class */ (() => {
                     [containerSym]: ({ target }) => {
                         if (options === undefined || (undefined === input || history))
                             return;
-                        if (target.innerHTML !== '') {
-                            console.log('going in here too much');
-                            target.innerHTML = '';
+                        if (self._jsonEditor === undefined) {
+                            if (options['onChange'] === undefined) {
+                                options['onChange'] = handleChange.bind(self);
+                            }
+                            self._jsonEditor = new JSONEditor(target, this.options);
                         }
-                        self._jsonEditor = new JSONEditor(target, this.options);
                         self._jsonEditor.set(input || history);
-                        if (options['onChange'] === undefined) {
-                            options['onChange'] = handleChange.bind(self);
-                        }
                     }
                 }),
             ];
