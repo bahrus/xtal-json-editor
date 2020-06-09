@@ -1,18 +1,9 @@
-import { XtallatX } from 'xtal-element/xtal-latx.js';
-import { define } from 'trans-render/define.js';
-import { hydrate } from 'trans-render/hydrate.js';
-//const cs_src = import.meta['url']; //bundlephobia still doesn;t support
-//const base = cs_src.split('/').slice(0, -1).join('/');
-const base = 'https://unpkg.com/xtal-json-editor@0.0.40';
-const input = 'input';
-const options = 'options';
-const archive = 'archive';
-const as = 'as';
+import { XtalElement, define } from 'xtal-element/XtalElement.js';
+const cs_src = import.meta.url;
+const base = cs_src.split('/').slice(0, -1).join('/');
 const template = document.createElement('template');
 let css;
-fetch(base + '/jsoneditor.min.css', {
-    credentials: 'same-origin'
-}).then(resp => {
+fetch(base + '/jsoneditor.min.css').then(resp => {
     resp.text().then(content => {
         const searchStr = 'img/jsoneditor-icons.svg';
         css = replaceAll(content, searchStr, base + '/' + searchStr);
@@ -39,132 +30,84 @@ function checkIfReady() {
             }
             ${css}
             </style>
-            <div id="xcontainer" style="height:100%;width:100%"></div>            
+            <div style="height:100%;width:100%"></div>            
             `;
         init();
     }
 }
+export const PropActions = {
+    syncHistory: ({ input, self }) => {
+        if (self.archive) {
+            if (self.history === undefined)
+                self.history = [];
+            self.history.push(input);
+        }
+    },
+    syncValue: ({ editedResult, self }) => {
+        self.value = editedResult;
+    },
+};
+const containerSym = Symbol();
 /**
  * @element xtal-json-editor
  * @event edited-result-changed
  */
-export class XtalJsonEditor extends XtallatX(hydrate(HTMLElement)) {
-    constructor() {
-        super();
-        /************ Properties *****************/
-        this._input = undefined;
-        this._history = undefined;
-        this._archive = false;
-        /***********End Properties ************/
-        /***************** Attributes  */
-        this._as = 'text';
-        this._connected = false;
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
-    static get is() { return 'xtal-json-editor'; }
-    get input() {
-        return this._archive ? this._history : this._input;
-    }
-    /**
-     * Object to edit / view
-     * @attr
-     */
-    set input(val) {
-        if (this._archive) {
-            if (this._history === undefined)
-                this._history = [];
-            this._history.push(val);
-        }
-        else {
-            this._input = val;
-        }
-        this.onPropsChange();
-    }
-    get options() {
-        return this._options;
-    }
-    /**
-     * Options for JSON Editor.  See https://github.com/josdejong/jsoneditor/blob/master/docs/api.md#configuration-options
-     * @attr
-     */
-    set options(val) {
-        this._options = val;
-        this.onPropsChange();
-    }
-    get archive() {
-        return this._archive;
-    }
-    /**
-     * Archive previous values
-     * @attr
-     */
-    set archive(nv) {
-        this.attr(archive, nv, '');
-    }
-    get editedResult() {
-        return this._editedResult;
-    }
-    /**
-     * Edited result
-     */
-    set editedResult(val) {
-        this._editedResult = val;
-        this.value = val;
-        this.de('edited-result', {
-            value: val
-        });
-    }
-    get as() {
-        return this._as;
-    }
-    /**
-     * Indicated whether edited result should be stringified as text.
-     * @attr
-     */
-    set as(val) {
-        this.attr(as, val);
-    }
-    static get observedAttributes() {
-        return super.observedAttributes.concat([input, options, as, archive]);
-    }
-    attributeChangedCallback(name, oldVal, newVal) {
-        switch (name) {
-            case input:
-            case options:
-                this[name] = JSON.parse(newVal);
-                break;
-            case as:
-                this._as = newVal;
-                break;
-            case archive:
-                this._archive = newVal !== null;
-                break;
-        }
-    }
-    connectedCallback() {
-        this._connected = true;
-        this.propUp([input, options, as, archive]);
-        this.onPropsChange();
-    }
-    onPropsChange() {
-        if (!this._connected || (this._input === undefined && !this._history === undefined) || !this._options)
-            return;
-        if (!this._options['onChange']) {
-            this.options['onChange'] = () => {
-                let result = this._jsonEditor.get();
-                if (this.as === 'text')
-                    result = JSON.stringify(result);
-                this.editedResult = result;
+let XtalJsonEditor = /** @class */ (() => {
+    class XtalJsonEditor extends XtalElement {
+        constructor() {
+            super(...arguments);
+            this.readyToInit = true;
+            this.readyToRender = true;
+            this.mainTemplate = template;
+            /**
+             * Indicated whether edited result should be stringified as text.
+             * @attr
+             */
+            this.as = 'text';
+            this.initTransform = {
+                div: containerSym
             };
+            this.updateTransforms = [
+                ({ options, disabled, input, history, handleChange, self }) => ({
+                    [containerSym]: ({ target }) => {
+                        if (options === undefined || (undefined === input || history))
+                            return;
+                        if (target.innerHTML !== '') {
+                            console.log('going in here too much');
+                            target.innerHTML = '';
+                        }
+                        self._jsonEditor = new JSONEditor(target, this.options);
+                        self._jsonEditor.set(input || history);
+                        if (options['onChange'] === undefined) {
+                            options['onChange'] = handleChange.bind(self);
+                        }
+                    }
+                }),
+            ];
+            this.propActions = [
+                PropActions.syncHistory,
+                PropActions.syncValue
+            ];
         }
-        //}
-        const container = this.shadowRoot.querySelector('#xcontainer');
-        container.innerHTML = '';
-        this._jsonEditor = new JSONEditor(container, this.options);
-        this._jsonEditor.set(this._input || this._history);
+        handleChange() {
+            let result = this._jsonEditor.get();
+            if (this.as === 'text')
+                result = JSON.stringify(result);
+            this.editedResult = result;
+        }
     }
-}
+    XtalJsonEditor.is = 'xtal-json-editor';
+    XtalJsonEditor.attributeProps = ({ disabled, input, history, archive, options, editedResult, value, as }) => ({
+        bool: [disabled, archive],
+        obj: [input, history, options, editedResult, value],
+        async: [input, options, disabled, history],
+        jsonProp: [input, options],
+        str: [as],
+        notify: [editedResult, value]
+    });
+    return XtalJsonEditor;
+})();
+export { XtalJsonEditor };
 function init() {
     define(XtalJsonEditor);
 }

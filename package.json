@@ -8,15 +8,16 @@
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "xtal-element": "0.0.86",
-    "trans-render": "0.0.135",
+    "xtal-element": "0.0.196",
+    "trans-render": "0.0.188",
     "json-editor": "0.7.28"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.3.0",
-    "jiife": "0.0.14",
-    "xtal-test": "0.0.20",
-    "es-module-shims": "0.4.5"
+    "@webcomponents/webcomponentsjs": "2.4.3",
+    "xtal-test": "0.0.44",
+    "es-module-shims": "0.4.6",
+    "xtal-json-merge": "0.2.39",
+    "p-et-alia": "0.0.95"
   },
   "scripts": {
     "serve": "node node_modules/xtal-test/serve.js",
