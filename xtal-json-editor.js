@@ -59,11 +59,6 @@ let XtalJsonEditor = /** @class */ (() => {
             this.readyToInit = true;
             this.readyToRender = true;
             this.mainTemplate = template;
-            /**
-             * Indicated whether edited result should be stringified as text.
-             * @attr
-             */
-            this.as = 'text';
             this.initTransform = {
                 div: containerSym
             };
@@ -86,6 +81,11 @@ let XtalJsonEditor = /** @class */ (() => {
                 PropActions.syncHistory,
                 PropActions.syncValue
             ];
+            /**
+             * Indicated whether edited result should be stringified as text.
+             * @attr
+             */
+            this.as = 'text';
         }
         handleChange() {
             let result = this._jsonEditor.get();

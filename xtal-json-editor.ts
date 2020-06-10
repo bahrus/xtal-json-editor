@@ -67,11 +67,6 @@ const containerSym = Symbol();
 export class XtalJsonEditor extends XtalElement {
     static is = 'xtal-json-editor';
 
-    readyToInit = true;
-    readyToRender = true;
-
-    mainTemplate = template;
-
     static attributeProps = ({disabled, input, history, archive, options, editedResult, value, as}: XtalJsonEditor) =>({
         bool: [disabled, archive],
         obj: [input, history, options, editedResult, value],
@@ -81,6 +76,42 @@ export class XtalJsonEditor extends XtalElement {
         notify: [editedResult, value]
     } as AttributeProps);
 
+    readyToInit = true;
+    readyToRender = true;
+
+    mainTemplate = template;
+
+    initTransform = {
+        div: containerSym
+    };
+
+    updateTransforms = [
+        ({options, disabled, input, history, handleChange, self}: XtalJsonEditor) => ({
+            [containerSym]: ({target})  => {
+                if(options === undefined || (undefined === input || history)) return;
+                if(self._jsonEditor === undefined){
+                    if(options['onChange'] === undefined){
+                        options['onChange'] = handleChange.bind(self);
+                    }
+                    self._jsonEditor = new JSONEditor(target, this.options);
+                }
+                self._jsonEditor.set(input || history);
+
+            }
+        }),
+    
+    ];
+
+    propActions = [
+        PropActions.syncHistory,
+        PropActions.syncValue
+    ]
+
+    handleChange(){
+        let result = this._jsonEditor.get();
+        if (this.as === 'text') result = JSON.stringify(result);
+        this.editedResult = result;
+    }
 
 
     input: object | undefined;
@@ -114,37 +145,11 @@ export class XtalJsonEditor extends XtalElement {
 
     _jsonEditor: any;
 
-    initTransform = {
-        div: containerSym
-    };
 
-    updateTransforms = [
-        ({options, disabled, input, history, handleChange, self}: XtalJsonEditor) => ({
-            [containerSym]: ({target})  => {
-                if(options === undefined || (undefined === input || history)) return;
-                if(self._jsonEditor === undefined){
-                    if(options['onChange'] === undefined){
-                        options['onChange'] = handleChange.bind(self);
-                    }
-                    self._jsonEditor = new JSONEditor(target, this.options);
-                }
-                self._jsonEditor.set(input || history);
 
-            }
-        }),
-    
-    ];
 
-    propActions = [
-        PropActions.syncHistory,
-        PropActions.syncValue
-    ]
 
-    handleChange(){
-        let result = this._jsonEditor.get();
-        if (this.as === 'text') result = JSON.stringify(result);
-        this.editedResult = result;
-    }
+
 
 
 }
