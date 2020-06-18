@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "xtal-element": "0.0.203",
-    "trans-render": "0.0.189",
+    "trans-render": "0.0.199",
     "json-editor": "0.7.28"
   },
   "devDependencies": {
