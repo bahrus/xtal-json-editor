@@ -146,12 +146,6 @@ export class XtalJsonEditor extends XtalElement {
     _jsonEditor: any;
 
 
-
-
-
-
-
-
 }
 
 function init() {
