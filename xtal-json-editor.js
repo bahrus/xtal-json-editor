@@ -52,60 +52,56 @@ const containerSym = Symbol();
  * @element xtal-json-editor
  * @event edited-result-changed
  */
-let XtalJsonEditor = /** @class */ (() => {
-    class XtalJsonEditor extends XtalElement {
-        constructor() {
-            super(...arguments);
-            this.readyToInit = true;
-            this.readyToRender = true;
-            this.mainTemplate = template;
-            this.initTransform = {
-                div: containerSym
-            };
-            this.updateTransforms = [
-                ({ options, disabled, input, history, handleChange, self }) => ({
-                    [containerSym]: ({ target }) => {
-                        if (options === undefined || (undefined === input || history))
-                            return;
-                        if (self._jsonEditor === undefined) {
-                            if (options['onChange'] === undefined) {
-                                options['onChange'] = handleChange.bind(self);
-                            }
-                            self._jsonEditor = new JSONEditor(target, this.options);
+export class XtalJsonEditor extends XtalElement {
+    constructor() {
+        super(...arguments);
+        this.readyToInit = true;
+        this.readyToRender = true;
+        this.mainTemplate = template;
+        this.initTransform = {
+            div: containerSym
+        };
+        this.updateTransforms = [
+            ({ options, disabled, input, history, handleChange, self }) => ({
+                [containerSym]: ({ target }) => {
+                    if (options === undefined || (undefined === input || history))
+                        return;
+                    if (self._jsonEditor === undefined) {
+                        if (options['onChange'] === undefined) {
+                            options['onChange'] = handleChange.bind(self);
                         }
-                        self._jsonEditor.set(input || history);
+                        self._jsonEditor = new JSONEditor(target, this.options);
                     }
-                }),
-            ];
-            this.propActions = [
-                PropActions.syncHistory,
-                PropActions.syncValue
-            ];
-            /**
-             * Indicated whether edited result should be stringified as text.
-             * @attr
-             */
-            this.as = 'text';
-        }
-        handleChange() {
-            let result = this._jsonEditor.get();
-            if (this.as === 'text')
-                result = JSON.stringify(result);
-            this.editedResult = result;
-        }
+                    self._jsonEditor.set(input || history);
+                }
+            }),
+        ];
+        this.propActions = [
+            PropActions.syncHistory,
+            PropActions.syncValue
+        ];
+        /**
+         * Indicated whether edited result should be stringified as text.
+         * @attr
+         */
+        this.as = 'text';
     }
-    XtalJsonEditor.is = 'xtal-json-editor';
-    XtalJsonEditor.attributeProps = ({ disabled, input, history, archive, options, editedResult, value, as }) => ({
-        bool: [disabled, archive],
-        obj: [input, history, options, editedResult, value],
-        async: [input, options, disabled, history],
-        jsonProp: [input, options],
-        str: [as],
-        notify: [editedResult, value]
-    });
-    return XtalJsonEditor;
-})();
-export { XtalJsonEditor };
+    handleChange() {
+        let result = this._jsonEditor.get();
+        if (this.as === 'text')
+            result = JSON.stringify(result);
+        this.editedResult = result;
+    }
+}
+XtalJsonEditor.is = 'xtal-json-editor';
+XtalJsonEditor.attributeProps = ({ disabled, input, history, archive, options, editedResult, value, as }) => ({
+    bool: [disabled, archive],
+    obj: [input, history, options, editedResult, value],
+    async: [input, options, disabled, history],
+    jsonProp: [input, options],
+    str: [as],
+    notify: [editedResult, value]
+});
 function init() {
     define(XtalJsonEditor);
 }
